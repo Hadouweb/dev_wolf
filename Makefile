@@ -4,11 +4,10 @@ SRCPATH = ./srcs
 INCPATH = ./includes
 
 LIBFT = ./libft
-MINILIBX = ./minilibx_macos
 
-HEADER = -I $(LIBFT)/includes -I $(INCPATH) -I $(MINILIBX)
+HEADER = -I $(LIBFT)/includes -I $(INCPATH)
 
-LIB = $(LIBFT)/libft.a $(MINILIBX)/libmlx.a -framework OpenGL -framework AppKit 
+LIB = $(LIBFT)/libft.a
 
 SRC = 	$(SRCPATH)/main.c\
 
@@ -20,7 +19,6 @@ all : $(NAME)
 
 $(NAME) : $(OBJ)
 	@make -C $(LIBFT)
-	@make -C $(MINILIBX)
 	@$(CC) $(HEADER) $(LIB) -o $(NAME) $(OBJ)
 
 %.o: %.c
@@ -29,7 +27,6 @@ $(NAME) : $(OBJ)
 
 clean : 
 	@make -C $(LIBFT) clean
-	@make -C $(MINILIBX) clean
 	rm -rf $(OBJ)
 
 fclean : clean
