@@ -7,7 +7,7 @@ LIBFT = ./libft
 
 HEADER = -I $(LIBFT)/includes -I $(INCPATH)
 
-LIB = $(LIBFT)/libft.a
+LIB = $(LIBFT)/libft.a -framework SDL2
 
 SRC = 	$(SRCPATH)/main.c\
 
