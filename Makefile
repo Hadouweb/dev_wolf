@@ -11,6 +11,8 @@ HEADER = -I $(LIBFT)/includes -I $(INCPATH) -I $(MINILIBX)
 LIB = -L$(LIBFT) -lft -L$(MINILIBX) -lmlx -framework OpenGL -framework AppKit 
 
 SRC = 	$(SRCPATH)/main.c\
+		$(SRCPATH)/w_draw.c\
+		$(SRCPATH)/w_event.c\
 
 OBJ = $(SRC:.c=.o)
 
