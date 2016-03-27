@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "mlx.h"
 #include "libft.h"
+#include <fcntl.h>
 
 # define SIZE_W 1024
 # define SIZE_H 768
@@ -25,11 +26,19 @@ typedef struct		s_color
 	unsigned char	a;
 }					t_color;
 
+typedef struct 		s_map
+{
+	int				x;
+	int				y;
+	char			**tab;
+}					t_map;
+
 typedef struct  	s_app
 {
 	void			*mlx;
 	void			*win;
 	t_obj			*obj;
+	t_map			map;
 	int				end;
 }					t_app;
 
@@ -41,4 +50,11 @@ t_color		w_get_color(unsigned char r, unsigned char g,
 	unsigned char b, unsigned char a);
 t_obj		*w_init_obj_info(void *mlx, int width, int height);
 
+void		w_del_node(void *content, size_t content_size);
+
+void		w_set_map(t_app *app, char *file);
+
+void		w_print_error_exit(char *str, char *error);
+
+void		w_debug_map(t_app *app);
 #endif
