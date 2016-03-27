@@ -9,6 +9,7 @@ typedef struct  	s_app
 {
 	SDL_Window		*win;
 	SDL_Event 		event;
+	SDL_Renderer	*renderer;
 	int				end;
 }					t_app;
 
