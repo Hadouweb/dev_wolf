@@ -7,7 +7,7 @@ void		w_draw(t_app *app)
 	ft_bzero(app->obj->data, SIZE_W * SIZE_H * 4);
 }
 
-void		w_set_obj(t_obj *obj, int x, int y, t_color color)
+void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
 {
 	if (y < 0 || y > SIZE_H - 1 || x < 0 || x > SIZE_W - 1)
 		return ;

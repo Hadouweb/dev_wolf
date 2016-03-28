@@ -15,6 +15,7 @@ void		w_set_map(t_app *app, char *file)
 	while (get_next_line(fd, &line) > 0)
 	{
 		size = ft_strlen(line) + 1;
+		line = ft_del_char(line, ' ');
 		ft_lstpush_back(&lst, line, size);
 		ft_strdel(&line);
 		app->map.y++;
