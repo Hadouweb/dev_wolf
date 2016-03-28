@@ -5,6 +5,7 @@
 #include "mlx.h"
 #include "libft.h"
 #include <fcntl.h>
+#include <math.h>
 
 # define SIZE_W 1024
 # define SIZE_H 768
@@ -18,6 +19,12 @@ typedef struct		s_obj
 	char			*data;
 }					t_obj;
 
+typedef struct 		s_vector
+{
+	int				x;
+	int				y;
+}					t_vector;
+
 typedef struct		s_color
 {
 	unsigned char	r;
@@ -25,6 +32,14 @@ typedef struct		s_color
 	unsigned char	b;
 	unsigned char	a;
 }					t_color;
+
+typedef struct 		s_vline
+{
+	int				x;
+	int				y_start;
+	int				y_end;
+	t_color			color;
+}					t_vline;
 
 typedef struct 		s_map
 {
@@ -40,11 +55,14 @@ typedef struct  	s_app
 	t_obj			*obj;
 	t_map			map;
 	int				end;
+	t_vline			current_vline;
 }					t_app;
 
 int			w_event(int keycode, t_app *app);
 
 void		w_draw(t_app *app);
+void		w_draw_vline(t_app *app);
+t_vline		w_get_vline(int x, int y_start, int y_end, t_color color);
 void		w_set_pixel(t_obj *obj, int x, int y, t_color color);
 t_color		w_get_color(unsigned char r, unsigned char g,
 	unsigned char b, unsigned char a);
@@ -57,4 +75,5 @@ void		w_set_map(t_app *app, char *file);
 void		w_print_error_exit(char *str, char *error);
 
 void		w_debug_map(t_app *app);
+
 #endif

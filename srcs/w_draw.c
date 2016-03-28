@@ -43,3 +43,32 @@ t_obj		*w_init_obj_info(void *mlx, int width, int height)
 	ft_bzero(obj->data, width * height * 4);
 	return (obj);
 }
+
+void		w_draw_vline(t_app *app)
+{
+	int		y;
+	int		max;
+	int		x;
+	t_color	color;
+
+	y = app->current_vline.y_start;
+	max = app->current_vline.y_end;
+	x = app->current_vline.x;
+	color = app->current_vline.color;
+	while (y < max)
+	{
+		w_set_pixel(app->obj, x, y, color);
+		y++;
+	}
+}
+
+t_vline		w_get_vline(int x, int y_start, int y_end, t_color color)
+{
+	t_vline		vline;
+
+	vline.x = x;
+	vline.y_start = y_start;
+	vline.y_end = y_end;
+	vline.color = color;
+	return (vline);
+}
