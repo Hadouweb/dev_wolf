@@ -6,6 +6,7 @@ int			w_event_arrow_key(int keycode, t_app *app)
 	int		pos_y;
 	double	old_dir_x;
 	double	old_plane_x;
+	double	rotate;
 
 	pos_x = (int)app->player.pos_x;
 	pos_y = (int)app->player.pos_y;
@@ -19,17 +20,25 @@ int			w_event_arrow_key(int keycode, t_app *app)
 	}
 	else if (keycode == KEY_LEFT)
 	{
-
+		rotate = 0.1;
+		old_dir_x = app->player.dir_x;
+		app->player.dir_x = app->player.dir_x * cos(rotate) - app->player.dir_y * sin(rotate);
+		app->player.dir_y = old_dir_x * sin(rotate) + app->player.dir_y * cos(rotate);
+		old_plane_x = app->player.cam_plane_x;
+		app->player.cam_plane_x = app->player.cam_plane_x * cos(rotate) - app->player.cam_plane_y * sin(rotate);
+		app->player.cam_plane_y = old_plane_x * sin(rotate) + app->player.cam_plane_y * cos(rotate);
+		w_test(app);
 	}
 	else if (keycode == KEY_RIGHT)
 	{
-		w_test(app);
+		rotate = -0.1;
 		old_dir_x = app->player.dir_x;
-		app->player.dir_x = app->player.dir_x * cos(-3) - app->player.dir_y * sin(-3);
-		app->player.dir_y = old_dir_x * sin(-3) + app->player.dir_y * cos(-3);
+		app->player.dir_x = app->player.dir_x * cos(rotate) - app->player.dir_y * sin(rotate);
+		app->player.dir_y = old_dir_x * sin(rotate) + app->player.dir_y * cos(rotate);
 		old_plane_x = app->player.cam_plane_x;
-		app->player.cam_plane_x = app->player.cam_plane_x - app->player.cam_plane_y;
-		app->player.cam_plane_y = old_plane_x + app->player.cam_plane_y;
+		app->player.cam_plane_x = app->player.cam_plane_x * cos(rotate) - app->player.cam_plane_y * sin(rotate);
+		app->player.cam_plane_y = old_plane_x * sin(rotate) + app->player.cam_plane_y * cos(rotate);
+		w_test(app);
 	}
 	else if (keycode == KEY_DOWN)
 	{
