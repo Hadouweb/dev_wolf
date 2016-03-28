@@ -10,6 +10,11 @@
 # define SIZE_W 1024
 # define SIZE_H 768
 
+# define KEY_UP 126
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
+# define KEY_DOWN 125
+
 typedef struct		s_obj
 {
 	void			*img;
@@ -48,6 +53,34 @@ typedef struct 		s_map
 	char			**tab;
 }					t_map;
 
+typedef struct  	s_player
+{
+	double			pos_x;
+	double			pos_y;
+	double			dir_x;
+	double			dir_y;
+	double			cam_plane_x;
+	double			cam_plane_y;
+}					t_player;
+
+typedef struct  	s_ray
+{
+	double			camera_x;
+	double			ray_pos_x;
+	double			ray_pos_y;
+	double			ray_dir_x;
+	double			ray_dir_y;
+	int				map_x;
+	int				map_y;
+	double			dela_dist_x;
+	double			dela_dist_y;
+	double			side_dist_x;
+	double			side_dist_y;
+	int				step_x;
+	int				step_y;
+	int				side;
+}					t_ray;
+
 typedef struct  	s_app
 {
 	void			*mlx;
@@ -57,8 +90,12 @@ typedef struct  	s_app
 	int				end;
 	t_vline			current_vline;
 	int				up;
+	t_player		player;
+	t_ray			ray;
 }					t_app;
 
+
+int			w_event_repeat(int keycode, t_app *app);
 void		w_test(t_app *app);
 int			w_event(int keycode, t_app *app);
 

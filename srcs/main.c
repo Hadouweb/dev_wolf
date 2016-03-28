@@ -1,149 +1,119 @@
 #include "wolf3d.h"
 
-#define mapWidth 24
-#define mapHeight 24
-
-int worldMap[mapWidth][mapHeight]=
+void		w_init_player(t_app *app)
 {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
+	app->player.pos_x = 8;
+	app->player.pos_y = 5;
+	app->player.dir_x = -1;
+	app->player.dir_y = 0;
+	app->player.cam_plane_x = 0;
+	app->player.cam_plane_y = 0.66;
+}
 
-void		w_test(t_app *app)
+void		w_calculate_ray(t_app *app, int x)
 {
-double posX = 8, posY = 5; 
-  double dirX = -1, dirY = 0; //initial direction vector
-  double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
+	double		camera_x;
 
- // while(1)
-  //{
-	for(int x = 0; x < SIZE_W; x++)
+	camera_x = 2 * x / (double)SIZE_W - 1;
+	app->ray.ray_pos_x = app->player.pos_x;
+	app->ray.ray_pos_y = app->player.pos_y;
+	app->ray.ray_dir_x = app->player.dir_x + app->player.cam_plane_x * camera_x;
+	app->ray.ray_dir_y = app->player.dir_y + app->player.cam_plane_y * camera_x;
+	app->ray.map_x = (int)app->ray.ray_pos_x;
+	app->ray.map_y = (int)app->ray.ray_pos_y;
+	app->ray.dela_dist_x = sqrt(1 + (app->ray.ray_dir_y * app->ray.ray_dir_y) /
+		(app->ray.ray_dir_x * app->ray.ray_dir_x));
+	app->ray.dela_dist_y = sqrt(1 + (app->ray.ray_dir_x * app->ray.ray_dir_x) /
+		(app->ray.ray_dir_y * app->ray.ray_dir_y));
+
+	if (app->ray.ray_dir_x < 0)
 	{
+		app->ray.step_x = -1;
+		app->ray.side_dist_x = (app->ray.ray_pos_x - app->ray.map_x) * app->ray.dela_dist_x;
+	}
+	else
+	{
+		app->ray.step_x = 1;
+		app->ray.side_dist_x = (app->ray.map_x + 1.0 - app->ray.ray_pos_x) * app->ray.dela_dist_x;
+	}
+	if (app->ray.ray_dir_y < 0)
+	{
+		app->ray.step_y = -1;
+		app->ray.side_dist_y = (app->ray.ray_pos_y - app->ray.map_y) * app->ray.dela_dist_y;
+	}
+	else
+	{
+		app->ray.step_y = 1;
+		app->ray.side_dist_y = (app->ray.map_y + 1.0 - app->ray.ray_pos_y) * app->ray.dela_dist_y;
+	}
+	app->ray.side = -1;
+}
 
-	  //calculate ray position and direction
-	  double cameraX = 2 * x / (double)SIZE_W - 1; //x-coordinate in camera space
-	  double rayPosX = posX;
-	  double rayPosY = posY;
-	  double rayDirX = dirX + planeX * cameraX;
-	  double rayDirY = dirY + planeY * cameraX;
-	  //which box of the map we're in
-	  int mapX = (int)rayPosX;
-	  int mapY = (int)rayPosY;
+void		w_dda_algo(t_app *app)
+{
+	int 	hit;
 
-	  //length of ray from current position to next x or y-side
-	  double sideDistX;
-	  double sideDistY;
-
-	   //length of ray from one x or y-side to next x or y-side
-	  double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
-	  double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
-	  double perpWallDist;
-
-	  //what direction to step in x or y-direction (either +1 or -1)
-	  int stepX;
-	  int stepY;
-
-	  int hit = 0; //was there a wall hit?
-	  int side; //was a NS or a EW wall hit?
-	  //calculate step and initial sideDist
-	  if (rayDirX < 0)
-	  {
-		stepX = -1;
-		sideDistX = (rayPosX - mapX) * deltaDistX;
-	  }
-	  else
-	  {
-		stepX = 1;
-		sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX;
-	  }
-	  if (rayDirY < 0)
-	  {
-		stepY = -1;
-		sideDistY = (rayPosY - mapY) * deltaDistY;
-	  }
-	  else
-	  {
-		stepY = 1;
-		sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
-	  }
-	  //perform DDA
-	  while (hit == 0)
-	  {
-		//jump to next map square, OR in x-direction, OR in y-direction
-		if (sideDistX < sideDistY)
+	hit = 0;
+	while (hit == 0)
+	{
+		if (app->ray.side_dist_x < app->ray.side_dist_y)
 		{
-		  sideDistX += deltaDistX;
-		  mapX += stepX;
-		  side = 0;
+			app->ray.side_dist_x += app->ray.dela_dist_x;
+			app->ray.map_x += app->ray.step_x;
+			app->ray.side = 0;
 		}
 		else
 		{
-		  sideDistY += deltaDistY;
-		  mapY += stepY;
-		  side = 1;
+			app->ray.side_dist_y += app->ray.dela_dist_y;
+			app->ray.map_y += app->ray.step_y;
+			app->ray.side = 1;
 		}
-		//printf("ok\n");
-		//Check if ray has hit a wall
-		if (app->map.tab[mapX][mapY] > '0') 
+		if (app->map.tab[app->ray.map_x][app->ray.map_y] > '0') 
 			hit = 1;
-		//printf("ok2\n");
-	  }
-	  //Calculate distance projected on camera direction (oblique distance will give fisheye effect!)
-	  if (side == 0) 
-	  	perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;
-	  else			 
-	  	perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;
+	}
+}
 
-	  //Calculate height of line to draw on screen
-	  int lineHeight = (int)(SIZE_H / perpWallDist);
+void		w_calculate_current_vline(t_app *app, int x)
+{
+	double	perp_wall_dist;
+	int		line_height;
+	int 	draw_start;
+	int		draw_end;
 
-	  //calculate lowest and highest pixel to fill in current stripe
-	  int drawStart = -lineHeight / 2 + SIZE_H / 2;
-	  if(drawStart < 0)drawStart = 0;
-	  int drawEnd = lineHeight / 2 + SIZE_H / 2;
-	  if(drawEnd >= SIZE_H)drawEnd = SIZE_H - 1;
+	if (app->ray.side == 0) 
+		perp_wall_dist = (app->ray.map_x - app->ray.ray_pos_x +
+			(1 - app->ray.step_x) / 2) / app->ray.ray_dir_x;
+	else			 
+		perp_wall_dist = (app->ray.map_y - app->ray.ray_pos_y +
+			(1 - app->ray.step_y) / 2) / app->ray.ray_dir_y;
 
-	  //give x and y sides different brightness
-	  //if (side == 1) {color = color / 2;}
+	line_height = (int)(SIZE_H / perp_wall_dist);
 
-	  //draw the pixels of the stripe as a vertical line
-	  //verLine(x, drawStart, drawEnd, color);
-	  app->current_vline = w_get_vline(x, drawStart, drawEnd, 
-	  	w_get_color(255, 255, 0, 0));
-	  //printf("%d %d %d\n", x, drawStart, drawEnd);
-	  w_draw_vline(app);
-	    if (app->up)
-	    {
-	      if(app->map.tab[(int)(posX + dirX)][(int)posY] == '0') 
-	      	posX += dirX * 0.01;
-	      if(app->map.tab[(int)posX][(int)(posY + dirY)] == '0') 
-	      	posY += dirY * 0.01;
-	    }
+	draw_start = -line_height / 2 + SIZE_H / 2;
+	if(draw_start < 0)
+		draw_start = 0;
+
+	draw_end = line_height / 2 + SIZE_H / 2;
+	if(draw_end >= SIZE_H)
+		draw_end = SIZE_H - 1;
+
+	app->current_vline = w_get_vline(x, draw_start, draw_end, w_get_color(255, 255, 0, 0));
+}
+
+void		w_test(t_app *app)
+{
+	int		x;
+
+	x = 0;
+	while (x < SIZE_W)
+	{
+		w_calculate_ray(app, x);
+		w_dda_algo(app);
+		w_calculate_current_vline(app, x);
+		w_draw_vline(app);
+		x++;
 	}
 	w_draw(app);
-	//}
 }
 
 int			main(int ac, char **av)
@@ -157,12 +127,14 @@ int			main(int ac, char **av)
 
 	if (ac > 1)
 		w_set_map(&app, av[1]);
+	w_init_player(&app);
 	//app.current_vline = w_get_vline(50, 0, SIZE_H, w_get_color(255, 255, 0, 0));
 	//w_draw_vline(&app);
 	//w_draw(&app);
 	w_test(&app);
 
 	mlx_key_hook(app.win, w_event, &app);
+	mlx_hook(app.win, 2, 3, w_event_repeat, &app);
 	mlx_loop(app.mlx);
 	return (0);
 }
