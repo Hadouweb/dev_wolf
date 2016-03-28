@@ -33,7 +33,7 @@ int worldMap[mapWidth][mapHeight]=
 
 void		w_test(t_app *app)
 {
-double posX = 22, posY = 12; 
+double posX = 8, posY = 5; 
   double dirX = -1, dirY = 0; //initial direction vector
   double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
 
@@ -104,9 +104,11 @@ double posX = 22, posY = 12;
 		  mapY += stepY;
 		  side = 1;
 		}
-
+		//printf("ok\n");
 		//Check if ray has hit a wall
-		if (worldMap[mapX][mapY] > 0) hit = 1;
+		if (app->map.tab[mapX][mapY] > '0') 
+			hit = 1;
+		//printf("ok2\n");
 	  }
 	  //Calculate distance projected on camera direction (oblique distance will give fisheye effect!)
 	  if (side == 0) 
@@ -130,8 +132,15 @@ double posX = 22, posY = 12;
 	  //verLine(x, drawStart, drawEnd, color);
 	  app->current_vline = w_get_vline(x, drawStart, drawEnd, 
 	  	w_get_color(255, 255, 0, 0));
-	  printf("%d %d %d\n", x, drawStart, drawEnd);
+	  //printf("%d %d %d\n", x, drawStart, drawEnd);
 	  w_draw_vline(app);
+	    if (app->up)
+	    {
+	      if(app->map.tab[(int)(posX + dirX)][(int)posY] == '0') 
+	      	posX += dirX * 0.01;
+	      if(app->map.tab[(int)posX][(int)(posY + dirY)] == '0') 
+	      	posY += dirY * 0.01;
+	    }
 	}
 	w_draw(app);
 	//}

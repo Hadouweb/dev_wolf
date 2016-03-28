@@ -56,8 +56,10 @@ typedef struct  	s_app
 	t_map			map;
 	int				end;
 	t_vline			current_vline;
+	int				up;
 }					t_app;
 
+void		w_test(t_app *app);
 int			w_event(int keycode, t_app *app);
 
 void		w_draw(t_app *app);
