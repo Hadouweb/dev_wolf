@@ -1,0 +1,4 @@
+[submodule "libft"]
+      path = libft
+      url = https://nlebreton@bitbucket.org/nlebreton/42_libft.git
+
