@@ -31,7 +31,7 @@ $(NAME) : $(OBJ)
 
 %.o: %.c
 	@$(CC) $(HEADER) -o $@ -c $<
-	@echo "\033[32m█\033[0m\c"
+	@echo "\033[37m█\033[0m\c"
 
 clean : 
 	@make -C $(LIBFT) clean
