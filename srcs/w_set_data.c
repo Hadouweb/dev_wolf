@@ -56,10 +56,12 @@ void		w_set_map(t_app *app, char *file)
 		ft_strdel(&line);
 		app->map.y++;
 		if (size > app->map.x)
-			app->map.x = size - 1;
+			app->map.x = size - 2;
 	}
+	app->map.y--;
 	app->map.tab = ft_set_tab(lst);
 	//ft_lstprint(lst, NULL);
 	ft_lstdel(&lst, w_del_node);
-	//w_debug_map(app);
+	w_debug_map(app);
+	//exit(1);
 }

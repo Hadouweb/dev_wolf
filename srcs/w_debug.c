@@ -13,10 +13,10 @@ void		w_debug_map(t_app *app)
 	ft_putnbr(app->map.y);
 	ft_putchar('\n');
 	ft_putstr("Carte : \n");
-	while (i < app->map.y)
+	while (i <= app->map.y)
 	{
 		j = 0;
-		while (j < app->map.x)
+		while (j <= app->map.x)
 		{	
 			ft_putnbr(app->map.tab[i][j]);
 			//ft_putchar(' ');
