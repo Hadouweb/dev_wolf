@@ -3,6 +3,7 @@
 void		w_debug_map(t_app *app)
 {
 	int		i;
+	int		j;
 
 	i = 0;
 	ft_putstr("Largeur de la carte : ");
@@ -12,9 +13,16 @@ void		w_debug_map(t_app *app)
 	ft_putnbr(app->map.y);
 	ft_putchar('\n');
 	ft_putstr("Carte : \n");
-	while (app->map.tab[i])
+	while (i < app->map.y)
 	{
-		ft_putendl(app->map.tab[i]);
+		j = 0;
+		while (j < app->map.x)
+		{	
+			ft_putnbr(app->map.tab[i][j]);
+			//ft_putchar(' ');
+			j++;
+		}
+		ft_putchar('\n');
 		i++;
 	}
 }

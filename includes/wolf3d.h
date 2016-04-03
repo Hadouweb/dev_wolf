@@ -7,8 +7,8 @@
 #include <fcntl.h>
 #include <math.h>
 
-# define SIZE_W 1024
-# define SIZE_H 768
+# define SIZE_W 512
+# define SIZE_H 384
 
 # define KEY_UP 126
 # define KEY_LEFT 123
@@ -50,7 +50,7 @@ typedef struct 		s_map
 {
 	int				x;
 	int				y;
-	char			**tab;
+	int				**tab;
 }					t_map;
 
 typedef struct  	s_player
@@ -94,7 +94,7 @@ typedef struct  	s_app
 	t_ray			ray;
 }					t_app;
 
-
+int			w_event_arrow_key(int keycode, t_app *app);
 int			w_event_repeat(int keycode, t_app *app);
 int		w_test(t_app *app);
 int			w_event(int keycode, t_app *app);

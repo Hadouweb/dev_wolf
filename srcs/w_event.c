@@ -12,21 +12,12 @@ int			w_event_arrow_key(int keycode, t_app *app)
 	pos_x = (int)app->player.pos_x;
 	pos_y = (int)app->player.pos_y;
 	move_speed = 0.05;
-	if (keycode == KEY_UP && pos_x < pos_x + app->player.dir_x - 0.5)
+	if (keycode == KEY_UP)
 	{
-		if (app->map.tab[(int)(pos_y + app->player.dir_y * move_speed)][pos_x] == '0') 
-			app->player.pos_x += app->player.dir_x * move_speed;
-		if (app->map.tab[pos_y][(int)(pos_x + app->player.dir_x * move_speed)] == '0') 
-			app->player.pos_y += app->player.dir_y * move_speed;
-		printf("Wall Y X: %c %c\n", 
-			app->map.tab[(int)(app->player.pos_y + app->player.dir_y * move_speed)][(int)app->player.pos_x],
-			app->map.tab[(int)app->player.pos_y][(int)(app->player.pos_x + app->player.dir_x * move_speed)]);
-		printf("Pos Y X: %d %d\n", 
-			(int)(pos_y + app->player.dir_y * move_speed),
-			(int)pos_x);
-		printf("Dir Y X: %f %f\n", 
-			app->player.dir_y, 
-			app->player.dir_x);
+		if (app->map.tab[(int)(pos_x + app->player.dir_x)][pos_y] == 0) 
+			app->player.pos_x += app->player.dir_x * 0.05;
+		if (app->map.tab[pos_x][(int)(pos_y + app->player.dir_y)] == 0) 
+			app->player.pos_y += app->player.dir_y * 0.05;
 		/*if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) 
 			posX += dirX * moveSpeed;
       	if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) 

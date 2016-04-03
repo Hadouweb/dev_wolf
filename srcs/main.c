@@ -2,7 +2,7 @@
 
 void		w_init_player(t_app *app)
 {
-	app->player.pos_x = 8;
+	app->player.pos_x = 5;
 	app->player.pos_y = 5;
 	app->player.dir_x = -1;
 	app->player.dir_y = 0;
@@ -66,7 +66,7 @@ void		w_dda_algo(t_app *app)
 			app->ray.map_y += app->ray.step_y;
 			app->ray.side = 1;
 		}
-		if (app->map.tab[app->ray.map_y][app->ray.map_x] > '0')
+		if (app->map.tab[app->ray.map_x][app->ray.map_y] > 0)
 			hit = 1;
 	}
 }
