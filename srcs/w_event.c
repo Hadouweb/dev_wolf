@@ -7,16 +7,31 @@ int			w_event_arrow_key(int keycode, t_app *app)
 	double	old_dir_x;
 	double	old_plane_x;
 	double	rotate;
+	double	move_speed;
 
 	pos_x = (int)app->player.pos_x;
 	pos_y = (int)app->player.pos_y;
-	if (keycode == KEY_UP)
+	move_speed = 0.05;
+	if (keycode == KEY_UP && pos_x < pos_x + app->player.dir_x - 0.5)
 	{
-		if (app->map.tab[(int)(pos_x + app->player.dir_x)][pos_y] == '0') 
-			app->player.pos_x += app->player.dir_x * 0.05;
-		if (app->map.tab[pos_x][(int)(pos_y + app->player.dir_y)] == '0') 
-			app->player.pos_y += app->player.dir_y * 0.05;
-		w_test(app);
+		if (app->map.tab[(int)(pos_y + app->player.dir_y * move_speed)][pos_x] == '0') 
+			app->player.pos_x += app->player.dir_x * move_speed;
+		if (app->map.tab[pos_y][(int)(pos_x + app->player.dir_x * move_speed)] == '0') 
+			app->player.pos_y += app->player.dir_y * move_speed;
+		printf("Wall Y X: %c %c\n", 
+			app->map.tab[(int)(app->player.pos_y + app->player.dir_y * move_speed)][(int)app->player.pos_x],
+			app->map.tab[(int)app->player.pos_y][(int)(app->player.pos_x + app->player.dir_x * move_speed)]);
+		printf("Pos Y X: %d %d\n", 
+			(int)(pos_y + app->player.dir_y * move_speed),
+			(int)pos_x);
+		printf("Dir Y X: %f %f\n", 
+			app->player.dir_y, 
+			app->player.dir_x);
+		/*if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) 
+			posX += dirX * moveSpeed;
+      	if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) 
+      		posY += dirY * moveSpeed;*/
+		//w_test(app);
 	}
 	else if (keycode == KEY_LEFT)
 	{
@@ -27,7 +42,7 @@ int			w_event_arrow_key(int keycode, t_app *app)
 		old_plane_x = app->player.cam_plane_x;
 		app->player.cam_plane_x = app->player.cam_plane_x * cos(rotate) - app->player.cam_plane_y * sin(rotate);
 		app->player.cam_plane_y = old_plane_x * sin(rotate) + app->player.cam_plane_y * cos(rotate);
-		w_test(app);
+		//w_test(app);
 	}
 	else if (keycode == KEY_RIGHT)
 	{
@@ -38,7 +53,7 @@ int			w_event_arrow_key(int keycode, t_app *app)
 		old_plane_x = app->player.cam_plane_x;
 		app->player.cam_plane_x = app->player.cam_plane_x * cos(rotate) - app->player.cam_plane_y * sin(rotate);
 		app->player.cam_plane_y = old_plane_x * sin(rotate) + app->player.cam_plane_y * cos(rotate);
-		w_test(app);
+		//w_test(app);
 	}
 	else if (keycode == KEY_DOWN)
 	{
@@ -46,13 +61,15 @@ int			w_event_arrow_key(int keycode, t_app *app)
 			app->player.pos_x -= app->player.dir_x * 0.05;
 		if (app->map.tab[pos_x][(int)(pos_y + app->player.dir_y)] == '0') 
 			app->player.pos_y -= app->player.dir_y * 0.05;
-		w_test(app);
+		//w_test(app);
 	}
 	return (1);
 }
 
 int			w_event_repeat(int keycode, t_app *app)
 {
+	if (app || keycode)
+		;
 	w_event_arrow_key(keycode, app);
 	return (1);
 }
@@ -63,6 +80,8 @@ int			w_event(int keycode, t_app *app)
 		exit(1);
 	else
 		printf("%d\n", keycode);
-	w_event_arrow_key(keycode, app);
+	if (app)
+		;
+	//w_event_arrow_key(keycode, app);
 	return (1);
 }

@@ -12,13 +12,11 @@ void		w_init_player(t_app *app)
 
 void		w_calculate_ray(t_app *app, int x)
 {
-	double		camera_x;
-
-	camera_x = 2 * x / (double)SIZE_W - 1;
+	app->player.camera_x = 2 * x / (double)SIZE_W - 1;
 	app->ray.ray_pos_x = app->player.pos_x;
 	app->ray.ray_pos_y = app->player.pos_y;
-	app->ray.ray_dir_x = app->player.dir_x + app->player.cam_plane_x * camera_x;
-	app->ray.ray_dir_y = app->player.dir_y + app->player.cam_plane_y * camera_x;
+	app->ray.ray_dir_x = app->player.dir_x + app->player.cam_plane_x * app->player.camera_x;
+	app->ray.ray_dir_y = app->player.dir_y + app->player.cam_plane_y * app->player.camera_x;
 	app->ray.map_x = (int)app->ray.ray_pos_x;
 	app->ray.map_y = (int)app->ray.ray_pos_y;
 	app->ray.dela_dist_x = sqrt(1 + (app->ray.ray_dir_y * app->ray.ray_dir_y) /
@@ -68,7 +66,7 @@ void		w_dda_algo(t_app *app)
 			app->ray.map_y += app->ray.step_y;
 			app->ray.side = 1;
 		}
-		if (app->map.tab[app->ray.map_y][app->ray.map_x] > '0') 
+		if (app->map.tab[app->ray.map_y][app->ray.map_x] > '0')
 			hit = 1;
 	}
 }
@@ -79,6 +77,7 @@ void		w_calculate_current_vline(t_app *app, int x)
 	int		line_height;
 	int 	draw_start;
 	int		draw_end;
+	t_color	color;
 
 	if (app->ray.side == 0) 
 		perp_wall_dist = (app->ray.map_x - app->ray.ray_pos_x +
@@ -97,10 +96,39 @@ void		w_calculate_current_vline(t_app *app, int x)
 	if(draw_end >= SIZE_H)
 		draw_end = SIZE_H - 1;
 
-	app->current_vline = w_get_vline(x, draw_start, draw_end, w_get_color(255, 255, 0, 0));
+	color = w_get_color(255, 255, 0, 0);
+	if (app->ray.side == 1)
+		color = w_get_color(125, 125, 0, 0);
+	app->current_vline = w_get_vline(x, draw_start, draw_end, color);
 }
 
-void		w_test(t_app *app)
+void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
+{
+	if (y < 0 || y > SIZE_H - 1 || x < 0 || x > SIZE_W - 1)
+		return ;
+	obj->data[y * obj->sizeline + x * obj->bpp / 8] = color.r;
+	obj->data[y * obj->sizeline + x * obj->bpp / 8 + 1] = color.g;
+	obj->data[y * obj->sizeline + x * obj->bpp / 8 + 2] = color.b;
+	obj->data[y * obj->sizeline + x * obj->bpp / 8 + 3] = color.a;
+}
+
+void		w_draw_vline(t_app *app, int x)
+{
+	int		y;
+	int		max;
+	t_color	color;
+
+	y = app->current_vline.y_start;
+	max = app->current_vline.y_end;
+	color = app->current_vline.color;
+	while (y < max)
+	{
+		w_set_pixel(app->obj, x, y, color);
+		y++;
+	}
+}
+
+int			w_test(t_app *app)
 {
 	int		x;
 
@@ -110,10 +138,11 @@ void		w_test(t_app *app)
 		w_calculate_ray(app, x);
 		w_dda_algo(app);
 		w_calculate_current_vline(app, x);
-		w_draw_vline(app);
+		w_draw_vline(app, x);
 		x++;
 	}
 	w_draw(app);
+	return (1);
 }
 
 int			main(int ac, char **av)
@@ -131,10 +160,9 @@ int			main(int ac, char **av)
 	//app.current_vline = w_get_vline(50, 0, SIZE_H, w_get_color(255, 255, 0, 0));
 	//w_draw_vline(&app);
 	//w_draw(&app);
-	w_test(&app);
-
-	mlx_key_hook(app.win, w_event, &app);
 	mlx_hook(app.win, 2, 3, w_event_repeat, &app);
+	mlx_key_hook(app.win, w_event, &app);
+	mlx_loop_hook(app.mlx, w_test, &app);
 	mlx_loop(app.mlx);
 	return (0);
 }

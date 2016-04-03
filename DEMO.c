@@ -147,8 +147,10 @@ int main(int argc, char* argv[])
         if (worldMap[mapX][mapY] > 0) hit = 1;
       }
       //Calculate distance projected on camera direction (oblique distance will give fisheye effect!)
-      if (side == 0) perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;
-      else           perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;
+      if (side == 0) 
+        perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;
+      else           
+        perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;
 
       //Calculate height of line to draw on screen
       int lineHeight = (int)(h / perpWallDist);
