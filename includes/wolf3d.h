@@ -92,6 +92,7 @@ typedef struct  	s_app
 	int				up;
 	t_player		player;
 	t_ray			ray;
+	t_color			test;
 }					t_app;
 
 int			w_event_arrow_key(int keycode, t_app *app);

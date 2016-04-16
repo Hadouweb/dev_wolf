@@ -2,20 +2,35 @@
 
 void		w_init_player(t_app *app)
 {
-	app->player.pos_x = 5;
-	app->player.pos_y = 5;
-	app->player.dir_x = -1;
-	app->player.dir_y = 0;
-	app->player.cam_plane_x = 0;
-	app->player.cam_plane_y = 0.66;
+	app->player.pos_x = 5; //Position du joueur en x
+	app->player.pos_y = 5; //Position du joueur en y
+	app->player.dir_x = -1; //Direction du joueur en x
+	app->player.dir_y = 0; //Direction du joueur en y
+	app->player.cam_plane_x = 0; //Plan de la camera en x
+	app->player.cam_plane_y = 0.66; //Plan de la camera en y
+}
+
+void		w_calculate_ray(t_app *app, int x)
+{
+	app->player.camera_x = 2 * x / (double)SIZE_W - 1; //Position de la camera en x
+	app->ray.ray_pos_x = app->player.pos_x; //Position de depart du rayon en x
+	app->ray.ray_pos_y = app->player.pos_y; //Position de depart du rayon en y
+	app->ray.ray_dir_x = app->player.dir_x + app->player.cam_plane_x * app->player.camera_x; //Direction du rayon en x
+	app->ray.ray_dir_y = app->player.dir_y + app->player.cam_plane_y * app->player.camera_x; //Direction du rayon en y
+	app->ray.map_x = (int)app->ray.ray_pos_x; //Position acutel du joueur/cam sur la grille en x
+	app->ray.map_y = (int)app->ray.ray_pos_y; //Position acutel du joueur/cam sur la grille en y
+	app->ray.dela_dist_x = sqrt(1 + (app->ray.ray_dir_y * app->ray.ray_dir_y) /
+		(app->ray.ray_dir_x * app->ray.ray_dir_x)); // Delta entre la position actuel x et le prochain x
+	app->ray.dela_dist_y = sqrt(1 + (app->ray.ray_dir_x * app->ray.ray_dir_x) /
+		(app->ray.ray_dir_y * app->ray.ray_dir_y)); // Delta entre la position actuel y et le prochain y
 }
 
 void		w_calculate_step(t_app *app)
 {
-	if (app->ray.ray_dir_x < 0)
+	if (app->ray.ray_dir_x < 0) //Direction du rayon
 	{
-		app->ray.step_x = -1;
-		app->ray.side_dist_x = (app->ray.ray_pos_x - app->ray.map_x) * app->ray.dela_dist_x;
+		app->ray.step_x = -1; // Incrementation pour le deplacement du rayon
+		app->ray.side_dist_x = (app->ray.ray_pos_x - app->ray.map_x) * app->ray.dela_dist_x; //Distane du 'bloque'
 	}
 	else
 	{
@@ -34,21 +49,6 @@ void		w_calculate_step(t_app *app)
 	}
 }
 
-void		w_calculate_ray(t_app *app, int x)
-{
-	app->player.camera_x = 2 * x / (double)SIZE_W - 1;
-	app->ray.ray_pos_x = app->player.pos_x;
-	app->ray.ray_pos_y = app->player.pos_y;
-	app->ray.ray_dir_x = app->player.dir_x + app->player.cam_plane_x * app->player.camera_x;
-	app->ray.ray_dir_y = app->player.dir_y + app->player.cam_plane_y * app->player.camera_x;
-	app->ray.map_x = (int)app->ray.ray_pos_x;
-	app->ray.map_y = (int)app->ray.ray_pos_y;
-	app->ray.dela_dist_x = sqrt(1 + (app->ray.ray_dir_y * app->ray.ray_dir_y) /
-		(app->ray.ray_dir_x * app->ray.ray_dir_x));
-	app->ray.dela_dist_y = sqrt(1 + (app->ray.ray_dir_x * app->ray.ray_dir_x) /
-		(app->ray.ray_dir_y * app->ray.ray_dir_y));
-}
-
 void		w_dda_algo(t_app *app)
 {
 	int 	hit;
@@ -56,13 +56,13 @@ void		w_dda_algo(t_app *app)
 	hit = 0;
 	while (hit == 0)
 	{
-		if (app->ray.side_dist_x < app->ray.side_dist_y)
+		if (app->ray.side_dist_x < app->ray.side_dist_y) // Saute au prochain bloque en x
 		{
-			app->ray.side_dist_x += app->ray.dela_dist_x;
-			app->ray.map_x += app->ray.step_x;
+			app->ray.side_dist_x += app->ray.dela_dist_x; // Incrementation de la distance
+			app->ray.map_x += app->ray.step_x; // Incrementation de la position courante
 			app->ray.side = 0;
 		}
-		else
+		else // Saute au prochain bloque en y
 		{
 			app->ray.side_dist_y += app->ray.dela_dist_y;
 			app->ray.map_y += app->ray.step_y;
@@ -70,7 +70,7 @@ void		w_dda_algo(t_app *app)
 		}
 		if (app->ray.map_x < app->map.x && app->ray.map_y < app->map.y)
 		{
-			if (app->map.tab[app->ray.map_x][app->ray.map_y] > 0)
+			if (app->map.tab[app->ray.map_x][app->ray.map_y] > 0) // Rayon touche un mur
 				hit = 1;
 		}
 		else
@@ -86,35 +86,33 @@ void		w_calculate_current_vline(t_app *app, int x)
 	int		draw_end;
 	t_color	color;
 
-	if (app->ray.side == 0) 
+	if (app->ray.side == 0) // Caclul de la distance de la camera pour corriger le fisheye effect
 		perp_wall_dist = (app->ray.map_x - app->ray.ray_pos_x +
 			(1 - app->ray.step_x) / 2) / app->ray.ray_dir_x;
 	else			 
 		perp_wall_dist = (app->ray.map_y - app->ray.ray_pos_y +
 			(1 - app->ray.step_y) / 2) / app->ray.ray_dir_y;
 
-	line_height = (int)(SIZE_H / perp_wall_dist);
+	line_height = (int)(SIZE_H / perp_wall_dist); // La hauteur du mur a tracer
 
-	draw_start = -line_height / 2 + SIZE_H / 2;
+	draw_start = -line_height / 2 + SIZE_H / 2; // Le bas du mur
 	if(draw_start < 0)
 		draw_start = 0;
 
-	draw_end = line_height / 2 + SIZE_H / 2;
+	draw_end = line_height / 2 + SIZE_H / 2; // Le haut du mur
 	if(draw_end >= SIZE_H)
 		draw_end = SIZE_H - 1;
 
-	if (app->ray.side == 0 && app->ray.step_x < 0)
+	if (app->ray.side == 0 && app->ray.ray_dir_x < 0)
 		color = w_get_color(0, 255, 0, 0);
-	else if (app->ray.side == 0 && app->ray.step_x > 0)
+	else if (app->ray.side == 0 && app->ray.ray_dir_x > 0)
 		color = w_get_color(255, 0, 0, 0);
-	else if (app->ray.side == 1 && app->ray.step_y < 0)
+	else if (app->ray.side == 1 && app->ray.ray_dir_y < 0)
 		color = w_get_color(0, 0, 255, 0);
-	else if (app->ray.side == 1 && app->ray.step_y > 0)
+	else if (app->ray.side == 1 && app->ray.ray_dir_y > 0)
 		color = w_get_color(255, 255, 0, 0);
 	else
-		color = w_get_color(255, 255, 255, 0);
-
-	printf("%d\n", app->ray.step_x);
+		color = w_get_color(0, 255, 0, 0);
 	app->current_vline = w_get_vline(x, draw_start, draw_end, color);
 }
 
@@ -148,7 +146,7 @@ int			main(int ac, char **av)
 	if (ac > 1)
 		w_set_map(&app, av[1]);
 	else
-		w_set_map(&app, "map/level1");
+		w_set_map(&app, "map/default");
 	w_init_player(&app);
 	//app.current_vline = w_get_vline(50, 0, SIZE_H, w_get_color(255, 255, 0, 0));
 	//w_draw_vline(&app);
