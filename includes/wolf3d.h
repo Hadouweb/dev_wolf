@@ -7,8 +7,8 @@
 #include <fcntl.h>
 #include <math.h>
 
-# define SIZE_W 512
-# define SIZE_H 384
+# define SIZE_W 1600
+# define SIZE_H 1200
 
 # define KEY_UP 126
 # define KEY_LEFT 123
@@ -96,7 +96,7 @@ typedef struct  	s_app
 
 int			w_event_arrow_key(int keycode, t_app *app);
 int			w_event_repeat(int keycode, t_app *app);
-int		w_test(t_app *app);
+int			w_test(t_app *app);
 int			w_event(int keycode, t_app *app);
 
 void		w_draw(t_app *app);

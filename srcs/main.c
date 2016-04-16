@@ -103,13 +103,22 @@ void		w_calculate_current_vline(t_app *app, int x)
 	if(draw_end >= SIZE_H)
 		draw_end = SIZE_H - 1;
 
-	color = w_get_color(255, 255, 0, 0);
-	if (app->ray.side == 1)
-		color = w_get_color(125, 125, 0, 0);
+	if (app->ray.side == 0 && app->ray.step_x < 0)
+		color = w_get_color(0, 255, 0, 0);
+	else if (app->ray.side == 0 && app->ray.step_x > 0)
+		color = w_get_color(255, 0, 0, 0);
+	else if (app->ray.side == 1 && app->ray.step_y < 0)
+		color = w_get_color(0, 0, 255, 0);
+	else if (app->ray.side == 1 && app->ray.step_y > 0)
+		color = w_get_color(255, 255, 0, 0);
+	else
+		color = w_get_color(255, 255, 255, 0);
+
+	printf("%d\n", app->ray.step_x);
 	app->current_vline = w_get_vline(x, draw_start, draw_end, color);
 }
 
-int			w_test(t_app *app)
+int			w_generate(t_app *app)
 {
 	int		x;
 
@@ -138,13 +147,15 @@ int			main(int ac, char **av)
 
 	if (ac > 1)
 		w_set_map(&app, av[1]);
+	else
+		w_set_map(&app, "map/level1");
 	w_init_player(&app);
 	//app.current_vline = w_get_vline(50, 0, SIZE_H, w_get_color(255, 255, 0, 0));
 	//w_draw_vline(&app);
 	//w_draw(&app);
 	mlx_hook(app.win, 2, 3, w_event_repeat, &app);
 	mlx_key_hook(app.win, w_event, &app);
-	mlx_loop_hook(app.mlx, w_test, &app);
+	mlx_loop_hook(app.mlx, w_generate, &app);
 	mlx_loop(app.mlx);
 	return (0);
 }
