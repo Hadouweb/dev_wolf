@@ -171,6 +171,7 @@ int			w_generate(t_app *app)
 	int		x;
 
 	x = 0;
+
 	while (x < SIZE_W)
 	{
 		w_calculate_ray(app, x);
@@ -184,7 +185,14 @@ int			w_generate(t_app *app)
 		//w_debug_ray(app);
 		//exit(0);
 	}
-	w_draw(app);
+
+	//clock_t t;
+   // t = clock();
+w_draw(app);
+	//t = clock() - t;
+   // double time_taken = ((double)t)/CLOCKS_PER_SEC;
+	//printf("%f\n", time_taken);
+	
 	return (1);
 }
 

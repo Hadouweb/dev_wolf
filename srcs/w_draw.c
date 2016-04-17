@@ -23,26 +23,26 @@ t_color		w_get_color(unsigned char r, unsigned char g,
 
 void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
 {
+	int 	index;
+
 	if (y < 0 || y > SIZE_H - 1 || x < 0 || x > SIZE_W - 1)
 		return ;
-	obj->data[y * obj->sizeline + x * obj->bpp / 8] = color.r;
-	obj->data[y * obj->sizeline + x * obj->bpp / 8 + 1] = color.g;
-	obj->data[y * obj->sizeline + x * obj->bpp / 8 + 2] = color.b;
-	obj->data[y * obj->sizeline + x * obj->bpp / 8 + 3] = color.a;
+	index = y * obj->sizeline + x * obj->bpp / 8;
+	obj->data[index] = color.r;
+	obj->data[index + 1] = color.g;
+	obj->data[index + 2] = color.b;
 }
 
 void		w_draw_vline(t_app *app, int x)
 {
 	int		y;
 	int		max;
-	t_color	color;
 
 	y = app->current_vline.y_start;
 	max = app->current_vline.y_end;
-	color = app->current_vline.color;
 	while (y < max)
 	{
-		w_set_pixel(app->obj, x, y, color);
+		w_set_pixel(app->obj, x, y, app->current_vline.color);
 		y++;
 	}
 }
