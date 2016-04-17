@@ -6,6 +6,7 @@
 #include "libft.h"
 #include <fcntl.h>
 #include <math.h>
+#include <time.h>
 
 # define SIZE_W 1600
 # define SIZE_H 1200
@@ -81,6 +82,15 @@ typedef struct  	s_ray
 	int				side;
 }					t_ray;
 
+typedef struct 		s_fps
+{
+	double			time;
+	double			old_time;
+	double			frame_time;
+	int 			delay;
+	char			*str_fps;
+}					t_fps;
+
 typedef struct  	s_app
 {
 	void			*mlx;
@@ -93,6 +103,7 @@ typedef struct  	s_app
 	t_player		player;
 	t_ray			ray;
 	t_color			test;
+	t_fps			fps;
 }					t_app;
 
 int			w_event_arrow_key(int keycode, t_app *app);

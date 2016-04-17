@@ -8,6 +8,42 @@ void		w_init_player(t_app *app)
 	app->player.dir_y = 0; //Direction du joueur en y
 	app->player.cam_plane_x = 0; //Plan de la camera en x
 	app->player.cam_plane_y = 0.66; //Plan de la camera en y
+
+	app->fps.time = 0; //time of current frame
+  	app->fps.old_time = 0; //time of previous frame
+  	app->fps.delay = 0;
+  	app->fps.str_fps = ft_strdup("0");
+}
+
+
+void		w_debug_player(t_app *app) 
+{
+	printf("______ PLAYER _______\n");
+	printf("pos_x : %f\n", app->player.pos_x);
+	printf("pos_y : %f\n", app->player.pos_y);
+	printf("dir_x : %f\n", app->player.dir_x);
+	printf("dir_y : %f\n", app->player.dir_y);
+	printf("cam_plane_x : %f\n", app->player.cam_plane_x);
+	printf("cam_plane_y : %f\n", app->player.cam_plane_y);
+	printf("camera_x : %f\n", app->player.camera_x);
+}
+
+void		w_debug_ray(t_app *app) 
+{
+	printf("______ RAYON _______\n");
+	printf("ray_pos_x : %f\n", app->ray.ray_pos_x);
+	printf("ray_pos_y : %f\n", app->ray.ray_pos_y);
+	printf("ray_dir_x : %f\n", app->ray.ray_dir_x);
+	printf("ray_dir_y : %f\n", app->ray.ray_dir_y);
+	printf("map_x : %d\n", app->ray.map_x);
+	printf("map_y : %d\n", app->ray.map_y);
+	printf("dela_dist_x : %f\n", app->ray.dela_dist_x);
+	printf("dela_dist_y : %f\n", app->ray.dela_dist_y);
+	printf("side_dist_x : %f\n", app->ray.side_dist_x);
+	printf("side_dist_y : %f\n", app->ray.side_dist_y);
+	printf("step_x : %d\n", app->ray.step_x);
+	printf("step_y : %d\n", app->ray.step_y);
+	printf("side : %d\n", app->ray.side);
 }
 
 void		w_calculate_ray(t_app *app, int x)
@@ -116,6 +152,20 @@ void		w_calculate_current_vline(t_app *app, int x)
 	app->current_vline = w_get_vline(x, draw_start, draw_end, color);
 }
 
+void		w_print_fps(t_app *app) 
+{
+	app->fps.old_time = app->fps.time;
+	app->fps.time = clock();
+	app->fps.frame_time = (app->fps.time - app->fps.old_time) / 1000.0; //frameTime is the time this frame has taken, in seconds
+	if (app->fps.delay > 10000)
+	{
+		ft_strdel(&app->fps.str_fps);
+		app->fps.str_fps = ft_itoa((int)(1.0 / app->fps.frame_time));
+		app->fps.delay = 0;
+	}
+	app->fps.delay++;
+}
+
 int			w_generate(t_app *app)
 {
 	int		x;
@@ -128,7 +178,11 @@ int			w_generate(t_app *app)
 		w_dda_algo(app);
 		w_calculate_current_vline(app, x);
 		w_draw_vline(app, x);
+		w_print_fps(app);
 		x++;
+		//w_debug_player(app);
+		//w_debug_ray(app);
+		//exit(0);
 	}
 	w_draw(app);
 	return (1);
