@@ -1,4 +1,4 @@
-CC = gcc -Werror -Wextra -Wall -g
+CC = gcc -Werror -Wextra -Wall -g -pg
 
 SRCPATH = ./srcs
 INCPATH = ./includes

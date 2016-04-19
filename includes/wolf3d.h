@@ -8,8 +8,8 @@
 #include <math.h>
 #include <time.h>
 
-# define SIZE_W 1600
-# define SIZE_H 1200
+# define SIZE_W 500
+# define SIZE_H 300
 
 # define KEY_UP 126
 # define KEY_LEFT 123
