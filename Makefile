@@ -19,6 +19,7 @@ SRC = 	$(SRCPATH)/main.c\
 		$(SRCPATH)/w_util.c\
 		$(SRCPATH)/w_dda_algorithm.c\
 		$(SRCPATH)/w_draw_view.c\
+		$(SRCPATH)/w_player_direction.c\
 
 OBJ = $(SRC:.c=.o)
 

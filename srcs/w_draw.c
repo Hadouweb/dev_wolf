@@ -9,18 +9,6 @@ void		w_draw(t_app *app)
 	ft_bzero(app->obj->data, SIZE_W * SIZE_H * 4);
 }
 
-t_color		w_get_color(unsigned char r, unsigned char g,
-	unsigned char b, unsigned char a)
-{
-	t_color		color;
-
-	color.r = r;
-	color.g = g;
-	color.b = b;
-	color.a = a;
-	return (color);
-}
-
 void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
 {
 	int 	index;

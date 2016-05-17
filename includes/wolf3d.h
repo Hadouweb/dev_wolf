@@ -16,6 +16,8 @@
 # define KEY_RIGHT 124
 # define KEY_DOWN 125
 
+# define MOVE_SPEED 0.2
+
 typedef struct		s_obj
 {
 	void			*img;
@@ -140,5 +142,10 @@ void		w_preparation_for_vline(t_app *app, int x);
 void		w_print_fps(t_app *app);
 void		w_draw_vline(t_app *app, int x);
 int			w_draw_view(t_app *app);
+
+void		w_player_direction_up(t_app *app);
+void		w_player_direction_right(t_app *app);
+void		w_player_direction_left(t_app *app);
+void		w_player_direction_down(t_app *app);
 
 #endif

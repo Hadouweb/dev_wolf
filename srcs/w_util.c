@@ -36,3 +36,15 @@ void			w_print_fps(t_app *app)
 	}
 	app->fps.delay++;
 }
+
+t_color		w_get_color(unsigned char r, unsigned char g,
+	unsigned char b, unsigned char a)
+{
+	t_color		color;
+
+	color.r = r;
+	color.g = g;
+	color.b = b;
+	color.a = a;
+	return (color);
+}
