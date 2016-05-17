@@ -1,6 +1,6 @@
 #include "wolf3d.h"
 
-void	ft_set_one_dim(int **tab, t_list *l)
+static void	w_set_one_dim(int **tab, t_list *l)
 {
 	size_t	i;
 	char	*str;
@@ -14,7 +14,7 @@ void	ft_set_one_dim(int **tab, t_list *l)
 	}
 }
 
-int		**ft_set_tab(t_list *l)
+static int	**w_set_tab(t_list *l)
 {
 	int		**tab;
 	size_t	size;
@@ -28,7 +28,7 @@ int		**ft_set_tab(t_list *l)
 	{
 		if ((tab[i] = (int *)ft_memalloc(l->content_size * sizeof(int))) == NULL)
 			return (NULL);
-		ft_set_one_dim(&tab[i], l);
+		w_set_one_dim(&tab[i], l);
 		l = l->next;
 		i++;
 	}
@@ -59,9 +59,22 @@ void		w_set_map(t_app *app, char *file)
 			app->map.x = size - 2;
 	}
 	app->map.y--;
-	app->map.tab = ft_set_tab(lst);
-	//ft_lstprint(lst, NULL);
+	app->map.tab = w_set_tab(lst);
 	ft_lstdel(&lst, w_del_node);
 	w_debug_map(app);
-	//exit(1);
+}
+
+void		w_set_view(t_app *app)
+{
+	app->player.pos_x = 5; //Position du joueur en x
+	app->player.pos_y = 5; //Position du joueur en y
+	app->player.dir_x = -1; //Direction du joueur en x
+	app->player.dir_y = 0; //Direction du joueur en y
+	app->player.cam_plane_x = 0; //Plan de la camera en x
+	app->player.cam_plane_y = 0.66; //Plan de la camera en y
+
+	app->fps.time = 0; //time of current frame
+  	app->fps.old_time = 0; //time of previous frame
+  	app->fps.delay = 0;
+  	app->fps.str_fps = ft_strdup("0");
 }

@@ -120,11 +120,25 @@ t_color		w_get_color(unsigned char r, unsigned char g,
 t_obj		*w_init_obj_info(void *mlx, int width, int height);
 
 void		w_del_node(void *content, size_t content_size);
+t_color		w_get_cardinal_color(t_app *app);
+void		w_print_fps(t_app *app) ;
 
 void		w_set_map(t_app *app, char *file);
+void		w_set_view(t_app *app);
 
 void		w_print_error_exit(char *str, char *error);
 
 void		w_debug_map(t_app *app);
+void		w_debug_player(t_app *app); 
+void		w_debug_ray(t_app *app);
+
+void		w_preparation_for_dda_algorithm(t_app *app);
+void		w_dda_algorithm(t_app *app);
+
+void		w_current_position_of_ray(t_app *app, int x);
+void		w_preparation_for_vline(t_app *app, int x);
+void		w_print_fps(t_app *app);
+void		w_draw_vline(t_app *app, int x);
+int			w_draw_view(t_app *app);
 
 #endif

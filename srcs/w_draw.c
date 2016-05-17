@@ -33,20 +33,6 @@ void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
 	obj->data[index + 2] = color.b;
 }
 
-void		w_draw_vline(t_app *app, int x)
-{
-	int		y;
-	int		max;
-
-	y = app->current_vline.y_start;
-	max = app->current_vline.y_end;
-	while (y < max)
-	{
-		w_set_pixel(app->obj, x, y, app->current_vline.color);
-		y++;
-	}
-}
-
 t_obj		*w_init_obj_info(void *mlx, int width, int height)
 {
 	t_obj	*obj;

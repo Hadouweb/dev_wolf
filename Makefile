@@ -17,6 +17,8 @@ SRC = 	$(SRCPATH)/main.c\
 		$(SRCPATH)/w_debug.c\
 		$(SRCPATH)/w_set_data.c\
 		$(SRCPATH)/w_util.c\
+		$(SRCPATH)/w_dda_algorithm.c\
+		$(SRCPATH)/w_draw_view.c\
 
 OBJ = $(SRC:.c=.o)
 
