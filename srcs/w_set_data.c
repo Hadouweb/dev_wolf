@@ -36,6 +36,25 @@ static int	**w_set_tab(t_list *l)
 	return (tab);
 }
 
+void		w_check_line(char *str)
+{
+	int		i;
+
+	i = 0;
+	if (str)
+	{
+		while (str[i])
+		{
+			if (str[i] != ' ' && (str[i] > '9' || str[i] < '0'))
+			{
+				ft_putstr_fd("Mauvais format de fichier\n", 2);
+				exit(1);
+			}
+			i++;
+		}
+	}
+}
+
 void		w_set_map(t_app *app, char *file)
 {
 	int		fd;
@@ -50,6 +69,7 @@ void		w_set_map(t_app *app, char *file)
 		w_print_error_exit("Erreur d'ouverture du fichier : ", file);
 	while (get_next_line(fd, &line) > 0)
 	{
+		w_check_line(line);
 		line = ft_del_char(line, ' ');
 		size = ft_strlen(line) + 1;
 		ft_lstpush_back(&lst, line, size);
@@ -57,6 +77,11 @@ void		w_set_map(t_app *app, char *file)
 		app->map.y++;
 		if (size > app->map.x)
 			app->map.x = size - 2;
+	}
+	if (app->map.y == 0)
+	{
+		ft_putstr_fd("Mauvais format de fichier\n", 2);
+		exit(1);
 	}
 	app->map.y--;
 	app->map.tab = w_set_tab(lst);
