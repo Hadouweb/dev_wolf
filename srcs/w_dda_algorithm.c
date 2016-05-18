@@ -2,10 +2,10 @@
 
 void		w_preparation_for_dda_algorithm(t_app *app)
 {
-	// Delta entre la position actuel x et le prochain x
+	// Delta entre la premiere intersection et la prochaine en x
 	app->ray.dela_dist_x = sqrt(1 + (app->ray.ray_dir_y * app->ray.ray_dir_y) /
 		(app->ray.ray_dir_x * app->ray.ray_dir_x));
-	// Delta entre la position actuel y et le prochain y
+	// Delta entre la premiere intersection et la prochaine en y
 	app->ray.dela_dist_y = sqrt(1 + (app->ray.ray_dir_x * app->ray.ray_dir_x) /
 		(app->ray.ray_dir_y * app->ray.ray_dir_y));
 	if (app->ray.ray_dir_x < 0) //Direction du rayon

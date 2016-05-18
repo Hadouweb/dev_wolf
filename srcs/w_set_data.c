@@ -143,7 +143,7 @@ void		w_set_view(t_app *app)
 	app->player.dir_x = -1; //Direction du joueur en x
 	app->player.dir_y = 0; //Direction du joueur en y
 	app->player.cam_plane_x = 0; //Plan de la camera en x
-	app->player.cam_plane_y = 0.66; //Plan de la camera en y
+	app->player.cam_plane_y = 0.60; //Plan de la camera en y
 
 	app->fps.time = 0; //time of current frame
   	app->fps.old_time = 0; //time of previous frame
