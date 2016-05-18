@@ -106,6 +106,8 @@ void		w_set_map(t_app *app, char *file)
 	fd = open(file, O_RDONLY);
 	lst = NULL;
 	size = 0;
+	app->player.pos_x = -1;
+	app->player.pos_y = -1;
 	if (fd == -1)
 		w_print_error_exit("Erreur d'ouverture du fichier : ", file);
 	while (get_next_line(fd, &line) > 0)
@@ -126,7 +128,8 @@ void		w_set_map(t_app *app, char *file)
 	}
 	app->map.y--;
 	app->map.tab = w_set_tab(lst);
-	if (app->map.tab[(int)app->player.pos_x][(int)app->player.pos_y] != 0)
+	if ((app->player.pos_x == -1 || app->player.pos_y == -1) ||
+		app->map.tab[(int)app->player.pos_x][(int)app->player.pos_y] != 0)
 	{
 		ft_putstr_fd("Mauvaise position de la camera\n", 2);
 		exit(1);
