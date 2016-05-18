@@ -3,9 +3,9 @@ static char *arena[] = {
 /* width height num_colors chars_per_pixel */
 "    92    71        3            1",
 /* colors */
-". c #ff0000",
-"# c #00ff00",
-"a c #0000ff",
+". c #dcd1ba",
+"# c #e6dac2",
+"a c #d2c7b1",
 /* pixels */
 "#..##..##a##..aa#...#.#a###aa#a#.a..#.#.....a..#a.a#.###.#a..#a##..##..##a##..aa#...#.#a###a",
 "#a.##aa.#.##.a####a##.aaaa.#a.#a##.a..a#a#.###aaa##a####a.#.#a#a#a.##aa.#.##.a####a##.aaaa.#",

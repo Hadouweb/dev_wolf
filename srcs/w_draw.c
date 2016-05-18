@@ -4,7 +4,7 @@ void		w_draw(t_app *app)
 {
 	mlx_clear_window(app->mlx, app->win);
 	mlx_put_image_to_window(app->mlx, app->win, app->obj->img, 0, 0);
-	mlx_put_image_to_window(app->mlx, app->win, app->ptr_xpm->img, 50, 50);
+	//mlx_put_image_to_window(app->mlx, app->win, app->ptr_xpm->img, 50, 50);
 	mlx_string_put(app->mlx, app->win, 20, 10, 0xFFFFFF, "FPS : ");
 	mlx_string_put(app->mlx, app->win, 80, 10, 0xFFFFFF, app->fps.str_fps);
 	ft_bzero(app->obj->data, SIZE_W * SIZE_H * 4);

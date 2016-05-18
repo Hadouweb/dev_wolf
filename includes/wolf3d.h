@@ -25,6 +25,8 @@ typedef struct		s_obj
 	int				sizeline;
 	int				endian;
 	char			*data;
+	int 			width;
+	int 			height;
 }					t_obj;
 
 typedef struct 		s_vector
