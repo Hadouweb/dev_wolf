@@ -71,7 +71,7 @@ void			w_preparation_for_vline(t_app *app, int x)
 		w_texture_color(app, x));
 }
 
-void		w_set_pixel_texture(t_obj *obj, int x, int y, t_obj *texture)
+void		w_set_pixel_texture(t_obj *obj, int x, int y, t_obj *texture, int max)
 {
 	int 	index;
 	int 	index_texture;
@@ -79,6 +79,7 @@ void		w_set_pixel_texture(t_obj *obj, int x, int y, t_obj *texture)
 	if (y < 0 || y > SIZE_H - 1 || x < 0 || x > SIZE_W - 1)
 		return ;
 	index = y * obj->sizeline + x * obj->bpp / 8;
+	max = 0;
 	index_texture = ((y % texture->height) * texture->sizeline +
 		(x % texture->width) * obj->bpp / 8);
 	obj->data[index] = texture->data[index_texture];
@@ -95,7 +96,7 @@ void			w_draw_vline(t_app *app, int x)
 	max = app->current_vline.y_end;
 	while (y < max)
 	{
-		w_set_pixel_texture(app->obj, x, y, app->ptr_xpm);
+		w_set_pixel_texture(app->obj, x, y, app->ptr_xpm, max);
 		y++;
 	}
 }
