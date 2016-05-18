@@ -36,21 +36,62 @@ static int	**w_set_tab(t_list *l)
 	return (tab);
 }
 
-void		w_check_line(char *str)
+int			w_check_position(t_app *app, char *str, char d)
+{
+	int		p;
+
+	p = ft_atoi(str);
+	if (d == 'x' && p >= 0 && p <= app->map.x)
+		return (p);
+	else if (d == 'y' && p >= 0 && p <= app->map.y)
+		return (p);
+	ft_putstr_fd("Mauvaise position de la camera\n", 2);
+	exit(1);
+	return (0);
+}
+
+void		w_check_directive(t_app *app, char *str)
+{
+	int		i;
+
+	i = 0;
+	if (str[1] && str[1] >= '0' && str[1] <= '9')
+	{
+		i++;
+		while (str[i] && str[i] != ' ')
+			i++;
+		if (str[i] && str[i] == ' ')
+		{
+			i++;
+			if (str[i] && str[1] == '0')
+				app->player.pos_x = w_check_position(app, &str[i], 'x');
+			else if (str[i] && str[1] == '1')
+				app->player.pos_y = w_check_position(app, &str[i], 'y');
+		}
+	}
+
+}
+
+void		w_check_line(t_app *app, char *str)
 {
 	int		i;
 
 	i = 0;
 	if (str)
 	{
-		while (str[i])
+		if (str[0] && str[0] == '!')
+			w_check_directive(app, str);
+		else
 		{
-			if (str[i] != ' ' && (str[i] > '9' || str[i] < '0'))
+			while (str[i])
 			{
-				ft_putstr_fd("Mauvais format de fichier\n", 2);
-				exit(1);
+				if (str[i] != ' ' && (str[i] > '9' || str[i] < '0'))
+				{
+					ft_putstr_fd("Mauvais format de fichier\n", 2);
+					exit(1);
+				}
+				i++;
 			}
-			i++;
 		}
 	}
 }
@@ -69,7 +110,7 @@ void		w_set_map(t_app *app, char *file)
 		w_print_error_exit("Erreur d'ouverture du fichier : ", file);
 	while (get_next_line(fd, &line) > 0)
 	{
-		w_check_line(line);
+		w_check_line(app, line);
 		line = ft_del_char(line, ' ');
 		size = ft_strlen(line) + 1;
 		ft_lstpush_back(&lst, line, size);
@@ -85,14 +126,17 @@ void		w_set_map(t_app *app, char *file)
 	}
 	app->map.y--;
 	app->map.tab = w_set_tab(lst);
+	if (app->map.tab[(int)app->player.pos_x][(int)app->player.pos_y] != 0)
+	{
+		ft_putstr_fd("Mauvaise position de la camera\n", 2);
+		exit(1);
+	}
+
 	ft_lstdel(&lst, w_del_node);
-	w_debug_map(app);
 }
 
 void		w_set_view(t_app *app)
 {
-	app->player.pos_x = 5; //Position du joueur en x
-	app->player.pos_y = 5; //Position du joueur en y
 	app->player.dir_x = -1; //Direction du joueur en x
 	app->player.dir_y = 0; //Direction du joueur en y
 	app->player.cam_plane_x = 0; //Plan de la camera en x
