@@ -106,6 +106,7 @@ typedef struct  	s_app
 	t_ray			ray;
 	t_color			test;
 	t_fps			fps;
+	t_obj			*ptr_xpm;
 }					t_app;
 
 int			w_event_arrow_key(int keycode, t_app *app);
