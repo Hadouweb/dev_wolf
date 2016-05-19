@@ -51,7 +51,7 @@ t_color			w_texture_color(t_app *app, int x)
 	return (color);
 }
 
-void		w_set_pixel_texture(t_obj *obj, int x, int y, t_obj *texture, int wall_height)
+void		w_set_pixel_texture(t_obj *obj, int x, int y, t_texture *texture, int wall_height)
 {
 	int 	index;
 	int 	d;
@@ -62,38 +62,77 @@ void		w_set_pixel_texture(t_obj *obj, int x, int y, t_obj *texture, int wall_hei
 		return ;
 	d = y * 256 - SIZE_H * 128 + wall_height * 128;
 	texture_y = ((d * texture->height) / wall_height) / 256;
-	index_texture = texture_y * texture->sizeline +
-		texture->x * texture->bpp / 8;
+	index_texture = texture_y * texture->obj->sizeline +
+		texture->x * texture->obj->bpp / 8;
 	index = y * obj->sizeline + x * obj->bpp / 8;
-	obj->data[index] = texture->data[index_texture];
-	obj->data[index + 1] = texture->data[index_texture + 1];
-	obj->data[index + 2] = texture->data[index_texture + 2];
+	obj->data[index] = texture->obj->data[index_texture];
+	obj->data[index + 1] = texture->obj->data[index_texture + 1];
+	obj->data[index + 2] = texture->obj->data[index_texture + 2];
 }
 
-void			w_preparation_for_texture(t_app *app, double perp_wall_dist)
+t_texture		*w_get_texture(t_app *app, char elem)
 {
-	double	wall_x;
+	t_list		*l;
+	t_texture	*texture;
 
+	l = app->lst_texture;
+	while (l)
+	{
+		texture = (t_texture*)l->content;
+		if (elem == texture->num)
+			return (texture);
+		l = l->next;
+	}
+	return (NULL);
+}
+
+t_texture		*w_preparation_for_texture(t_app *app, double perp_wall_dist, char elem)
+{
+	double		wall_x;
+	t_texture	*texture;
+
+	texture = w_get_texture(app, elem);
+	if (texture == NULL)
+		return (NULL);
 	if (app->ray.side == 0) 
 		wall_x = app->ray.ray_pos_y + perp_wall_dist * app->ray.ray_dir_y;
 	else
 		wall_x = app->ray.ray_pos_x + perp_wall_dist * app->ray.ray_dir_x;
 	wall_x -= floor(wall_x);
 
-	app->texture->x = (int)(wall_x * (double)app->texture->width);
+	texture->x = (int)(wall_x * (double)texture->width);
 	if(app->ray.side == 0 && app->ray.ray_dir_y > 0) 
-		app->texture->x = app->texture->width - app->texture->x - 1;
+		texture->x = texture->width - texture->x - 1;
 	if(app->ray.side == 1 && app->ray.ray_dir_x < 0) 
-		app->texture->x = app->texture->width - app->texture->x - 1;
+		texture->x = texture->width - texture->x - 1;
+	return (texture);
 }
 
-void			w_preparation_for_vline(t_app *app, int x)
+void			w_draw_vline_with_texture(t_app *app, int x, t_texture *texture)
 {
-	int		wall_height;
-	int 	down_wall;
-	int		top_wall;
-	double	perp_wall_dist;
+	int		y;
+	int		max;
+	int 	height;
 
+	y = app->current_vline.y_start;
+	max = app->current_vline.y_end;
+	height = max - y;
+	while (y < max)
+	{
+		w_set_pixel_texture(app->obj, x, y, texture, height);
+		y++;
+	}
+}
+
+void			w_preparation_for_vline(t_app *app, int x, char elem)
+{
+	int			wall_height;
+	int 		down_wall;
+	int			top_wall;
+	double		perp_wall_dist;
+	t_texture	*texture;
+
+	texture = NULL;
 	perp_wall_dist = w_correction_fisheye_effect(app);
 	wall_height = (int)(SIZE_H / perp_wall_dist); // La hauteur du mur a tracer
 
@@ -105,9 +144,20 @@ void			w_preparation_for_vline(t_app *app, int x)
 	if (top_wall >= SIZE_H)
 		top_wall = SIZE_H - 1;
 
-	w_preparation_for_texture(app, perp_wall_dist);
+	if (elem >= '0')
+	{
+		texture = w_preparation_for_texture(app, perp_wall_dist, elem);
+		if (texture != NULL)
+		{
+			app->current_vline = w_get_vline(x, down_wall, top_wall,
+				w_texture_color(app, x));
+			w_draw_vline_with_texture(app, x, texture);
+			return;
+		}
+	}
 	app->current_vline = w_get_vline(x, down_wall, top_wall,
-		w_texture_color(app, x));
+		w_get_cardinal_color(app));
+	w_draw_vline(app, x);
 }
 
 void			w_draw_vline(t_app *app, int x)
@@ -121,7 +171,7 @@ void			w_draw_vline(t_app *app, int x)
 	height = max - y;
 	while (y < max)
 	{
-		w_set_pixel_texture(app->obj, x, y, app->texture, height);
+		w_set_pixel(app->obj, x, y, app->current_vline.color);
 		y++;
 	}
 }
@@ -129,6 +179,7 @@ void			w_draw_vline(t_app *app, int x)
 int				w_draw_view(t_app *app)
 {
 	int		x;
+	char 	elem;
 
 	x = 0;
 
@@ -136,9 +187,8 @@ int				w_draw_view(t_app *app)
 	{
 		w_current_position_of_ray(app, x);
 		w_preparation_for_dda_algorithm(app);
-		w_dda_algorithm(app);
-		w_preparation_for_vline(app, x);
-		w_draw_vline(app, x);
+		elem = w_dda_algorithm(app);
+		w_preparation_for_vline(app, x, elem);
 		w_print_fps(app);
 		x++;
 	}

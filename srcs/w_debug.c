@@ -55,3 +55,16 @@ void		w_debug_ray(t_app *app)
 	printf("step_y : %d\n", app->ray.step_y);
 	printf("side : %d\n", app->ray.side);
 }
+
+void		w_print_lst_texture(void *data)
+{
+	t_texture	*texture;
+
+	texture = (t_texture*)data;
+	printf("width %d\n", texture->width);
+	printf("height %d\n", texture->height);
+	printf("x %d\n", texture->x);
+	printf("y %d\n", texture->y);
+	printf("num %d\n", texture->num);
+}
+

@@ -25,11 +25,17 @@ typedef struct		s_obj
 	int				sizeline;
 	int				endian;
 	char			*data;
+}					t_obj;
+
+typedef struct 		s_texture
+{
 	int 			width;
 	int 			height;
 	int 			x;
 	int 			y;
-}					t_obj;
+	char 			num;
+	t_obj			*obj;
+}					t_texture;
 
 typedef struct 		s_vector
 {
@@ -110,7 +116,7 @@ typedef struct  	s_app
 	t_ray			ray;
 	t_color			test;
 	t_fps			fps;
-	t_obj			*texture;
+	t_list			*lst_texture;
 }					t_app;
 
 int			w_event_arrow_key(int keycode, t_app *app);
@@ -140,10 +146,10 @@ void		w_debug_player(t_app *app);
 void		w_debug_ray(t_app *app);
 
 void		w_preparation_for_dda_algorithm(t_app *app);
-void		w_dda_algorithm(t_app *app);
+char		w_dda_algorithm(t_app *app);
 
 void		w_current_position_of_ray(t_app *app, int x);
-void		w_preparation_for_vline(t_app *app, int x);
+void		w_preparation_for_vline(t_app *app, int x, char elem);
 void		w_print_fps(t_app *app);
 void		w_draw_vline(t_app *app, int x);
 int			w_draw_view(t_app *app);

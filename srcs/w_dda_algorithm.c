@@ -30,7 +30,7 @@ void		w_preparation_for_dda_algorithm(t_app *app)
 	}
 }
 
-void		w_dda_algorithm(t_app *app)
+char		w_dda_algorithm(t_app *app)
 {
 	int 	hit;
 
@@ -51,10 +51,14 @@ void		w_dda_algorithm(t_app *app)
 		}
 		if (app->ray.map_x < app->map.x && app->ray.map_y < app->map.y)
 		{
-			if (app->map.tab[app->ray.map_x][app->ray.map_y] > 0) // Rayon touche un mur
+			if (app->map.tab[app->ray.map_x][app->ray.map_y] > 0)
+			{
+				return (app->map.tab[app->ray.map_x][app->ray.map_y] + '0');
 				hit = 1;
+			}
 		}
 		else
 			hit = 1;
 	}
+	return ('0');
 }
