@@ -29,12 +29,12 @@ typedef struct		s_obj
 
 typedef struct 		s_texture
 {
+	//t_obj			*obj;
 	int 			width;
 	int 			height;
 	int 			x;
 	int 			y;
 	char 			num;
-	t_obj			*obj;
 }					t_texture;
 
 typedef struct 		s_vector
@@ -147,7 +147,7 @@ void		w_debug_ray(t_app *app);
 
 void		w_preparation_for_dda_algorithm(t_app *app);
 char		w_dda_algorithm(t_app *app);
-
+void		w_print_lst_texture(void *data);
 void		w_current_position_of_ray(t_app *app, int x);
 void		w_preparation_for_vline(t_app *app, int x, char elem);
 void		w_print_fps(t_app *app);
