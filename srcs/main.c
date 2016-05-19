@@ -13,7 +13,7 @@ void		w_test_xpm(t_app *app)
 		&obj->bpp,
 		&obj->sizeline,
 		&obj->endian);
-	app->ptr_xpm = obj;
+	app->texture = obj;
 
 	printf("sizeline: %d bpp: %d\n", obj->sizeline, obj->bpp);
 	//ft_bzero(obj->data, width * height * 4);

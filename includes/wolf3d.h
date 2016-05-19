@@ -27,6 +27,8 @@ typedef struct		s_obj
 	char			*data;
 	int 			width;
 	int 			height;
+	int 			x;
+	int 			y;
 }					t_obj;
 
 typedef struct 		s_vector
@@ -108,7 +110,7 @@ typedef struct  	s_app
 	t_ray			ray;
 	t_color			test;
 	t_fps			fps;
-	t_obj			*ptr_xpm;
+	t_obj			*texture;
 }					t_app;
 
 int			w_event_arrow_key(int keycode, t_app *app);
