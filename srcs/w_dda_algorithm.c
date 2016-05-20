@@ -1,61 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   w_dda_algorithm.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/20 17:52:23 by nle-bret          #+#    #+#             */
+/*   Updated: 2016/05/20 17:52:25 by nle-bret         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
+
+void		w_calcul_delta_dist(t_app *app)
+{
+	app->ray.dela_dist_x = sqrt(1 + (app->ray.ray_dir_y * app->ray.ray_dir_y) /
+		(app->ray.ray_dir_x * app->ray.ray_dir_x));
+	app->ray.dela_dist_y = sqrt(1 + (app->ray.ray_dir_x * app->ray.ray_dir_x) /
+		(app->ray.ray_dir_y * app->ray.ray_dir_y));
+}
 
 void		w_preparation_for_dda_algorithm(t_app *app)
 {
-	// Delta entre la premiere intersection et la prochaine en x
-	app->ray.dela_dist_x = sqrt(1 + (app->ray.ray_dir_y * app->ray.ray_dir_y) /
-		(app->ray.ray_dir_x * app->ray.ray_dir_x));
-	// Delta entre la premiere intersection et la prochaine en y
-	app->ray.dela_dist_y = sqrt(1 + (app->ray.ray_dir_x * app->ray.ray_dir_x) /
-		(app->ray.ray_dir_y * app->ray.ray_dir_y));
-	if (app->ray.ray_dir_x < 0) //Direction du rayon
+	w_calcul_delta_dist(app);
+	if (app->ray.ray_dir_x < 0)
 	{
-		app->ray.step_x = -1; // Incrementation pour le deplacement du rayon
-		app->ray.side_dist_x = (app->ray.ray_pos_x - app->ray.map_x) * app->ray.dela_dist_x; //Distance du 'bloque'
+		app->ray.step_x = -1;
+		app->ray.side_dist_x = (app->ray.ray_pos_x - app->ray.map_x);
 	}
 	else
 	{
 		app->ray.step_x = 1;
-		app->ray.side_dist_x = (app->ray.map_x + 1.0 - app->ray.ray_pos_x) * app->ray.dela_dist_x;
+		app->ray.side_dist_x = (app->ray.map_x + 1.0 - app->ray.ray_pos_x);
 	}
 	if (app->ray.ray_dir_y < 0)
 	{
 		app->ray.step_y = -1;
-		app->ray.side_dist_y = (app->ray.ray_pos_y - app->ray.map_y) * app->ray.dela_dist_y;
+		app->ray.side_dist_y = (app->ray.ray_pos_y - app->ray.map_y);
 	}
 	else
 	{
 		app->ray.step_y = 1;
-		app->ray.side_dist_y = (app->ray.map_y + 1.0 - app->ray.ray_pos_y) * app->ray.dela_dist_y;
+		app->ray.side_dist_y = (app->ray.map_y + 1.0 - app->ray.ray_pos_y);
+	}
+	app->ray.side_dist_x *= app->ray.dela_dist_x;
+	app->ray.side_dist_y *= app->ray.dela_dist_y;
+}
+
+void		w_move_raycast(t_app *app)
+{
+	if (app->ray.side_dist_x < app->ray.side_dist_y)
+	{
+		app->ray.side_dist_x += app->ray.dela_dist_x;
+		app->ray.map_x += app->ray.step_x;
+		app->ray.side = 0;
+	}
+	else
+	{
+		app->ray.side_dist_y += app->ray.dela_dist_y;
+		app->ray.map_y += app->ray.step_y;
+		app->ray.side = 1;
 	}
 }
 
 char		w_dda_algorithm(t_app *app)
 {
-	int 	hit;
+	int		hit;
 
 	hit = 0;
 	while (hit == 0)
 	{
-		if (app->ray.side_dist_x < app->ray.side_dist_y) // Saute au prochain bloque en x
-		{
-			app->ray.side_dist_x += app->ray.dela_dist_x; // Incrementation de la distance
-			app->ray.map_x += app->ray.step_x; // Incrementation de la position courante
-			app->ray.side = 0;
-		}
-		else // Saute au prochain bloque en y
-		{
-			app->ray.side_dist_y += app->ray.dela_dist_y;
-			app->ray.map_y += app->ray.step_y;
-			app->ray.side = 1;
-		}
+		w_move_raycast(app);
 		if (app->ray.map_x < app->map.x && app->ray.map_y < app->map.y)
 		{
 			if (app->map.tab[app->ray.map_x][app->ray.map_y] > 0)
-			{
 				return (app->map.tab[app->ray.map_x][app->ray.map_y] + '0');
-				hit = 1;
-			}
 		}
 		else
 			hit = 1;

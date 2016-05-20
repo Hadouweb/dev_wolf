@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   w_event.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/20 17:52:47 by nle-bret          #+#    #+#             */
+/*   Updated: 2016/05/20 17:52:48 by nle-bret         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 int			w_event_arrow_key(int keycode, t_app *app)
@@ -38,19 +50,6 @@ int			w_event(int keycode, t_app *app)
 	else if (keycode == KEY_FLASH && app->speed > MOVE_SPEED)
 	{
 		app->speed = MOVE_SPEED;
-	}
-	if (keycode == KEY_JUMP)
-	{
-		//app->player.cam_plane_y += 1;
-		//app->player.cam_plane_x += 1;
-		//app->player.dir_y += 1;
-		//app->player.dir_x += 1;
-		//app->player.pos_y += 1;
-		//app->player.pos_x += 1;
-		//app->ray.ray_pos_x += 10;
-		//app->ray.ray_pos_y += 10;
-		//app->ray.ray_pos_x += 10;
-		//app->ray.ray_pos_y += 10;
 	}
 	printf("%d\n", keycode);
 	if (app)

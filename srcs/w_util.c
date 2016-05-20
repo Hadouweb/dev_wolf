@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   w_util.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/20 17:53:16 by nle-bret          #+#    #+#             */
+/*   Updated: 2016/05/20 17:53:17 by nle-bret         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 void		w_del_node(void *content, size_t content_size)
@@ -6,11 +18,11 @@ void		w_del_node(void *content, size_t content_size)
 	content_size = 0;
 }
 
-void			w_print_fps(t_app *app) 
+void		w_print_fps(t_app *app)
 {
 	app->fps.old_time = app->fps.time;
 	app->fps.time = clock();
-	app->fps.frame_time = (app->fps.time - app->fps.old_time) / 1000.0; //frameTime is the time this frame has taken, in seconds
+	app->fps.frame_time = (app->fps.time - app->fps.old_time) / 1000.0;
 	if (app->fps.delay > 10000)
 	{
 		ft_strdel(&app->fps.str_fps);
@@ -18,16 +30,4 @@ void			w_print_fps(t_app *app)
 		app->fps.delay = 0;
 	}
 	app->fps.delay++;
-}
-
-t_color		w_get_color(unsigned char r, unsigned char g,
-	unsigned char b, unsigned char a)
-{
-	t_color		color;
-
-	color.r = r;
-	color.g = g;
-	color.b = b;
-	color.a = a;
-	return (color);
 }

@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/20 17:52:17 by nle-bret          #+#    #+#             */
+/*   Updated: 2016/05/20 17:52:19 by nle-bret         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-
-int			main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_app	app;
 
@@ -10,11 +21,10 @@ int			main(int ac, char **av)
 	app.mlx = mlx_init();
 	app.win = mlx_new_window(app.mlx, SIZE_W, SIZE_H, "Wolf3D");
 	app.obj = w_init_obj_info(app.mlx, SIZE_W, SIZE_H);
-
 	if (ac > 1)
-		w_set_map(&app, av[1]);
+		w_read_map(&app, av[1]);
 	else
-		w_set_map(&app, "map/default");
+		w_read_map(&app, "map/default");
 	w_set_view(&app);
 	mlx_hook(app.win, 2, 3, w_event_repeat, &app);
 	mlx_key_hook(app.win, w_event, &app);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   w_draw.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/20 17:52:32 by nle-bret          #+#    #+#             */
+/*   Updated: 2016/05/20 17:52:34 by nle-bret         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 void		w_draw(t_app *app)
@@ -11,7 +23,7 @@ void		w_draw(t_app *app)
 
 void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
 {
-	int 	index;
+	int		index;
 
 	if (y < 0 || y > SIZE_H - 1 || x < 0 || x > SIZE_W - 1)
 		return ;
@@ -34,15 +46,4 @@ t_obj		*w_init_obj_info(void *mlx, int width, int height)
 		&obj->endian);
 	ft_bzero(obj->data, width * height * 4);
 	return (obj);
-}
-
-t_vline		w_get_vline(int x, int y_start, int y_end, t_color color)
-{
-	t_vline		vline;
-
-	vline.x = x;
-	vline.y_start = y_start;
-	vline.y_end = y_end;
-	vline.color = color;
-	return (vline);
 }

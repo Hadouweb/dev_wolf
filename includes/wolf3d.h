@@ -146,7 +146,7 @@ void		w_del_node(void *content, size_t content_size);
 t_color		w_get_cardinal_color(t_app *app);
 void		w_print_fps(t_app *app) ;
 
-void		w_set_map(t_app *app, char *file);
+void		w_read_map(t_app *app, char *file);
 void		w_set_texture(t_app *app, char *file_name, char num);
 void		w_set_one_dim(int **tab, t_list *l);
 int			**w_set_tab(t_list *l);
@@ -175,5 +175,19 @@ void		w_player_direction_up(t_app *app);
 void		w_player_direction_right(t_app *app);
 void		w_player_direction_left(t_app *app);
 void		w_player_direction_down(t_app *app);
+
+void			w_set_pixel_texture(t_app *ap, int x, int y,
+	t_texture *texture);
+t_texture		*w_preparation_for_texture(t_app *app,
+	double perp_wall_dist, char elem);
+void			w_draw_vline_with_texture(t_app *app, int x, t_texture *texture);
+
+t_color		w_get_color(unsigned char r, unsigned char g,
+	unsigned char b, unsigned char a);
+t_texture		*w_get_texture(t_app *app, char elem);
+t_color			w_get_cardinal_color(t_app *app);
+
+void			w_draw_color_or_texture(t_app *app, double perp_wall_dist,
+	int x, char elem);
 
 #endif

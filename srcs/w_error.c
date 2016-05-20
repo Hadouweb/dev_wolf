@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   w_error.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nle-bret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/20 17:52:42 by nle-bret          #+#    #+#             */
+/*   Updated: 2016/05/20 17:52:43 by nle-bret         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 void		w_print_error_exit(char *str, char *error)
@@ -21,7 +33,7 @@ void		w_check_directive(t_app *app, char *str)
 		{
 			i++;
 			w_set_directive(app, str, i);
-			return;
+			return ;
 		}
 	}
 	ft_putstr_fd("Mauvais format de directive\n", 2);
