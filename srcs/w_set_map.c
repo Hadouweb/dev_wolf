@@ -29,7 +29,6 @@ void		w_set_map(t_app *app, t_list **lst)
 		ft_putstr_fd("Mauvais format de fichier\n", 2);
 		exit(1);
 	}
-	app->map.y--;
 	app->map.tab = w_set_tab(*lst, app->map.y);
 	if ((app->player.pos_x == -1 || app->player.pos_y == -1) ||
 		app->map.tab[(int)app->player.pos_x][(int)app->player.pos_y] != 0)
@@ -52,8 +51,8 @@ void		w_set_map_or_directive(t_app *app, t_list **lst,
 			token = 1;
 		if (token == 0)
 			line = ft_del_char(line, ' ');
-		size = ft_strlen(line);
-		//printf("%s %d\n", line, size);
+		size = ft_strlen(line) + 1;
+		printf("%s %d\n", line, size);
 		ft_lstpush_back(lst, line, size);
 		ft_strdel(&line);
 		if (token == 0)
@@ -61,6 +60,7 @@ void		w_set_map_or_directive(t_app *app, t_list **lst,
 		if (size > app->map.x && token == 0)
 			app->map.x = size - 2;
 	}
+
 }
 
 void		w_read_map(t_app *app, char *file)
@@ -81,5 +81,6 @@ void		w_read_map(t_app *app, char *file)
 	{
 		w_set_map_or_directive(app, &lst, line, token);
 	}
+	ft_lstprint(lst, NULL);
 	w_set_map(app, &lst);
 }
