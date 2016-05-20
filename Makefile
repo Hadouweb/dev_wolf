@@ -20,6 +20,8 @@ SRC = 	$(SRCPATH)/main.c\
 		$(SRCPATH)/w_dda_algorithm.c\
 		$(SRCPATH)/w_draw_view.c\
 		$(SRCPATH)/w_player_direction.c\
+		$(SRCPATH)/w_set_texture.c\
+		$(SRCPATH)/w_set_map.c\
 
 OBJ = $(SRC:.c=.o)
 

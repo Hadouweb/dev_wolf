@@ -14,9 +14,7 @@ int			main(int ac, char **av)
 		w_set_map(&app, av[1]);
 	else
 		w_set_map(&app, "map/default");
-	ft_lstprint(app.lst_texture, w_print_lst_texture);
 	w_set_view(&app);
-	//w_add_texture_xpm(&app);
 	mlx_hook(app.win, 2, 3, w_event_repeat, &app);
 	mlx_key_hook(app.win, w_event, &app);
 	mlx_loop_hook(app.mlx, w_draw_view, &app);

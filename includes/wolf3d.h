@@ -8,8 +8,8 @@
 #include <math.h>
 #include <time.h>
 
-# define SIZE_W 500
-# define SIZE_H 300
+# define SIZE_W 960
+# define SIZE_H 540
 
 # define KEY_UP 126
 # define KEY_LEFT 123
@@ -137,9 +137,16 @@ t_color		w_get_cardinal_color(t_app *app);
 void		w_print_fps(t_app *app) ;
 
 void		w_set_map(t_app *app, char *file);
+void		w_set_texture(t_app *app, char *file_name, char num);
+void		w_set_one_dim(int **tab, t_list *l);
+int			**w_set_tab(t_list *l);
+void		w_set_directive(t_app *app, char *str, int i);
 void		w_set_view(t_app *app);
 
 void		w_print_error_exit(char *str, char *error);
+void		w_check_directive(t_app *app, char *str);
+int			w_check_line(t_app *app, char *str);
+int			w_check_position(t_app *app, char *str, char d);
 
 void		w_debug_map(t_app *app);
 void		w_debug_player(t_app *app); 
