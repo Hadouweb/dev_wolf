@@ -92,7 +92,6 @@ void		w_adjust_limit_map(t_app *app, t_list **lst)
 			str[i] = '1';
 		i++;
 	}
-	ft_lstprint(*lst, NULL);
 }
 
 void		w_read_map(t_app *app, char *file)
