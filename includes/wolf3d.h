@@ -23,6 +23,8 @@
 
 # define KEY_FLASH 257
 
+# define KEY_JUMP 49
+
 # define MOVE_SPEED 0.2
 # define ROT_SPEED 0.2
 
@@ -122,7 +124,6 @@ typedef struct  	s_app
 	int				up;
 	t_player		player;
 	t_ray			ray;
-	t_color			test;
 	t_fps			fps;
 	t_list			*lst_texture;
 	double 			speed;

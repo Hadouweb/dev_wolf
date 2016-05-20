@@ -39,6 +39,19 @@ int			w_event(int keycode, t_app *app)
 	{
 		app->speed = MOVE_SPEED;
 	}
+	if (keycode == KEY_JUMP)
+	{
+		//app->player.cam_plane_y += 1;
+		//app->player.cam_plane_x += 1;
+		//app->player.dir_y += 1;
+		//app->player.dir_x += 1;
+		//app->player.pos_y += 1;
+		//app->player.pos_x += 1;
+		//app->ray.ray_pos_x += 10;
+		//app->ray.ray_pos_y += 10;
+		//app->ray.ray_pos_x += 10;
+		//app->ray.ray_pos_y += 10;
+	}
 	printf("%d\n", keycode);
 	if (app)
 		;

@@ -7,8 +7,8 @@ void			w_current_position_of_ray(t_app *app, int x)
 	app->ray.ray_pos_y = app->player.pos_y; //Position de depart du rayon en y
 	app->ray.ray_dir_x = app->player.dir_x + app->player.cam_plane_x * app->player.camera_x; //Direction du rayon en x
 	app->ray.ray_dir_y = app->player.dir_y + app->player.cam_plane_y * app->player.camera_x; //Direction du rayon en y
-	app->ray.map_x = (int)app->ray.ray_pos_x; //Position acutel du joueur/cam sur la grille en x
-	app->ray.map_y = (int)app->ray.ray_pos_y; //Position acutel du joueur/cam sur la grille en y
+	app->ray.map_x = (int)app->ray.ray_pos_x; //Position actuel du joueur/cam sur la grille en x
+	app->ray.map_y = (int)app->ray.ray_pos_y; //Position actuel du joueur/cam sur la grille en y
 }
 
 static double	w_correction_fisheye_effect(t_app *app)
