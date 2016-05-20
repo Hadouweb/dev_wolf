@@ -29,7 +29,7 @@ typedef struct		s_obj
 
 typedef struct 		s_texture
 {
-	//t_obj			*obj;
+	t_obj			*obj;
 	int 			width;
 	int 			height;
 	int 			x;

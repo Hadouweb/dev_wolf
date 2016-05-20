@@ -41,7 +41,7 @@ t_color			w_get_cardinal_color(t_app *app)
 	return (color);
 }
 
-/*void		w_set_pixel_texture(t_obj *obj, int x, int y, t_texture *texture, int wall_height)
+void			w_set_pixel_texture(t_obj *obj, int x, int y, t_texture *texture, int wall_height)
 {
 	int 	index;
 	int 	d;
@@ -112,7 +112,7 @@ void			w_draw_vline_with_texture(t_app *app, int x, t_texture *texture)
 		w_set_pixel_texture(app->obj, x, y, texture, height);
 		y++;
 	}
-}*/
+}
 
 void			w_preparation_for_vline(t_app *app, int x, char elem)
 {
@@ -136,14 +136,14 @@ void			w_preparation_for_vline(t_app *app, int x, char elem)
 
 	if (elem > '1')
 	{
-		/*texture = w_preparation_for_texture(app, perp_wall_dist, elem);
+		texture = w_preparation_for_texture(app, perp_wall_dist, elem);
 		if (texture != NULL)
 		{
 			app->current_vline = w_get_vline(x, down_wall, top_wall,
-				w_texture_color(app, x));
+				w_get_cardinal_color(app));
 			w_draw_vline_with_texture(app, x, texture);
 			return;
-		}*/
+		}
 	}
 	app->current_vline = w_get_vline(x, down_wall, top_wall,
 		w_get_cardinal_color(app));

@@ -54,14 +54,16 @@ void		w_add_texture_xpm(t_app *app, char *file_name, char num)
 {
 	t_texture	texture;
 	t_obj		*obj;
+	int			height;
+	int			width;
 
 	printf("%s\n\n", file_name);
 	obj = NULL;
 	ft_bzero(&texture, sizeof(t_texture));
-	//if ((obj = (t_obj *)ft_memalloc(sizeof(t_obj))) == NULL)
-	//	ft_putstr_fd("Erreur d'allocation de t_obj\n", 2);
+	if ((obj = (t_obj *)ft_memalloc(sizeof(t_obj))) == NULL)
+		ft_putstr_fd("Erreur d'allocation de t_obj\n", 2);
 
-	/*obj->img = mlx_xpm_file_to_image(app->mlx, file_name,
+	obj->img = mlx_xpm_file_to_image(app->mlx, file_name,
 		&width, &height);
 
 	if (obj->img == NULL)
@@ -70,21 +72,21 @@ void		w_add_texture_xpm(t_app *app, char *file_name, char num)
 	obj->data = mlx_get_data_addr(obj->img,
 		&obj->bpp,
 		&obj->sizeline,
-		&obj->endian);*/
+		&obj->endian);
 
 	texture.num = num;
 	texture.x = 0;
 	texture.y = 0;
-	//texture.height = height;
-	//texture.width = width;
-	//texture.obj = obj;
+	texture.width = width;
+	texture.height = height;
+	texture.obj = obj;
 
 	ft_lstpush_front(&app->lst_texture, &texture, sizeof(t_texture));
 
 	t_texture *test;
 
 	test = (t_texture*)app->lst_texture->content;
-	w_print_lst_texture(test);
+	//w_print_lst_texture(test);
 	//ft_lstprint(app->lst_texture, w_print_lst_texture);
 }
 
@@ -94,8 +96,8 @@ void		w_set_directive(t_app *app, char *str, int i)
 		app->player.pos_x = w_check_position(app, &str[i], 'x');
 	else if (str[i] && str[1] == '1')
 		app->player.pos_y = w_check_position(app, &str[i], 'y');
-	//else if (str[i] && str[1] >= '2' && str[1] <= '9')
-	//	w_add_texture_xpm(app, &str[i], str[1]);
+	else if (str[i] && str[1] >= '2' && str[1] <= '9')
+		w_add_texture_xpm(app, &str[i], str[1]);
 }
 
 void		w_check_directive(t_app *app, char *str)
@@ -117,7 +119,7 @@ void		w_check_directive(t_app *app, char *str)
 
 }
 
-void		w_check_line(t_app *app, char *str)
+int			w_check_line(t_app *app, char *str)
 {
 	int		i;
 
@@ -125,20 +127,24 @@ void		w_check_line(t_app *app, char *str)
 	if (str)
 	{
 		if (str[0] && str[0] == '!')
+		{
 			w_check_directive(app, str);
+			return (1);
+		}
 		else
 		{
 			while (str[i])
 			{
 				if (str[i] != ' ' && (str[i] > '9' || str[i] < '0'))
 				{
-					ft_putstr_fd("Mauvais format de fichier\n", 2);
+					ft_putstr_fd("Mauvais format de map\n", 2);
 					exit(1);
 				}
 				i++;
 			}
 		}
 	}
+	return (0);
 }
 
 void		w_set_map(t_app *app, char *file)
@@ -147,24 +153,32 @@ void		w_set_map(t_app *app, char *file)
 	char	*line;
 	t_list	*lst;
 	int		size;
+	int		token;
 
 	fd = open(file, O_RDONLY);
 	lst = NULL;
 	size = 0;
 	app->player.pos_x = -1;
 	app->player.pos_y = -1;
+	token = 0;
 	if (fd == -1)
 		w_print_error_exit("Erreur d'ouverture du fichier : ", file);
 	while (get_next_line(fd, &line) > 0)
 	{
-		w_check_line(app, line);
-		line = ft_del_char(line, ' ');
-		size = ft_strlen(line) + 1;
-		ft_lstpush_back(&lst, line, size);
-		ft_strdel(&line);
-		app->map.y++;
-		if (size > app->map.x)
-			app->map.x = size - 2;
+		if ((line[0] >= '0' && line[0] <= '9') || line[0] == '!')
+		{
+			if (w_check_line(app, line) == 1)
+				token = 1;
+			if (token == 0)
+				line = ft_del_char(line, ' ');
+			size = ft_strlen(line) + 1;
+			ft_lstpush_back(&lst, line, size);
+			ft_strdel(&line);
+			if (token == 0)
+				app->map.y++;
+			if (size > app->map.x && token == 0)
+				app->map.x = size - 2;
+		}
 	}
 	if (app->map.y == 0)
 	{
@@ -179,7 +193,8 @@ void		w_set_map(t_app *app, char *file)
 		ft_putstr_fd("Mauvaise position de la camera\n", 2);
 		exit(1);
 	}
-
+	w_debug_map(app);
+	ft_lstprint(lst, NULL);
 	ft_lstdel(&lst, w_del_node);
 }
 
