@@ -56,7 +56,7 @@ void		w_set_map(t_app *app, char *file)
 		ft_putstr_fd("Mauvaise position de la camera\n", 2);
 		exit(1);
 	}
-	w_debug_map(app);
-	ft_lstprint(lst, NULL);
+	//w_debug_map(app);
+	//ft_lstprint(lst, NULL);
 	ft_lstdel(&lst, w_del_node);
 }

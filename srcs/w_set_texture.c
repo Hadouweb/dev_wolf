@@ -7,7 +7,6 @@ void		w_set_texture(t_app *app, char *file_name, char num)
 	int			height;
 	int			width;
 
-	printf("%s\n\n", file_name);
 	obj = NULL;
 	ft_bzero(&texture, sizeof(t_texture));
 	if ((obj = (t_obj *)ft_memalloc(sizeof(t_obj))) == NULL)
@@ -32,8 +31,4 @@ void		w_set_texture(t_app *app, char *file_name, char num)
 	texture.obj = obj;
 
 	ft_lstpush_front(&app->lst_texture, &texture, sizeof(t_texture));
-
-	t_texture *test;
-
-	test = (t_texture*)app->lst_texture->content;
 }
