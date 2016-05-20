@@ -47,3 +47,36 @@ t_obj		*w_init_obj_info(void *mlx, int width, int height)
 	ft_bzero(obj->data, width * height * 4);
 	return (obj);
 }
+
+static double	w_correction_fisheye_effect(t_app *app)
+{
+	double	perp_wall_dist;
+
+	if (app->ray.side == 0)
+		perp_wall_dist = (app->ray.map_x - app->ray.ray_pos_x +
+			(1 - app->ray.step_x) / 2) / app->ray.ray_dir_x;
+	else
+		perp_wall_dist = (app->ray.map_y - app->ray.ray_pos_y +
+			(1 - app->ray.step_y) / 2) / app->ray.ray_dir_y;
+	return (perp_wall_dist);
+}
+
+void			w_preparation_for_vline(t_app *app, int x, char elem)
+{
+	int			wall_height;
+	int			down_wall;
+	int			top_wall;
+	double		perp_wall_dist;
+
+	perp_wall_dist = w_correction_fisheye_effect(app);
+	wall_height = (int)(SIZE_H / perp_wall_dist);
+	down_wall = -wall_height / 2 + SIZE_H / 2;
+	if (down_wall < 0)
+		down_wall = 0;
+	top_wall = wall_height / 2 + SIZE_H / 2;
+	if (top_wall >= SIZE_H)
+		top_wall = SIZE_H - 1;
+	app->current_vline = w_get_vline(x, down_wall, top_wall,
+		w_get_cardinal_color(app));
+	w_draw_color_or_texture(app, perp_wall_dist, x, elem);
+}

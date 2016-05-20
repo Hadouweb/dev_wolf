@@ -71,7 +71,7 @@ char		w_dda_algorithm(t_app *app)
 	while (hit == 0)
 	{
 		w_move_raycast(app);
-		if (app->ray.map_x < app->map.x && app->ray.map_y < app->map.y)
+		if (app->ray.map_x <= app->map.x && app->ray.map_y <= app->map.y)
 		{
 			if (app->map.tab[app->ray.map_x][app->ray.map_y] > 0)
 				return (app->map.tab[app->ray.map_x][app->ray.map_y] + '0');

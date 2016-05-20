@@ -51,7 +51,6 @@ int			w_event(int keycode, t_app *app)
 	{
 		app->speed = MOVE_SPEED;
 	}
-	printf("%d\n", keycode);
 	if (app)
 		;
 	return (1);

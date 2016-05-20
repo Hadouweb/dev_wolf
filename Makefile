@@ -14,7 +14,6 @@ SRC = 	$(SRCPATH)/main.c\
 		$(SRCPATH)/w_draw.c\
 		$(SRCPATH)/w_event.c\
 		$(SRCPATH)/w_error.c\
-		$(SRCPATH)/w_debug.c\
 		$(SRCPATH)/w_set_data.c\
 		$(SRCPATH)/w_util.c\
 		$(SRCPATH)/w_dda_algorithm.c\
