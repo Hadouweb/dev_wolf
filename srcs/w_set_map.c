@@ -30,7 +30,7 @@ void		w_set_map(t_app *app, t_list **lst)
 		exit(1);
 	}
 	app->map.y--;
-	app->map.tab = w_set_tab(*lst);
+	app->map.tab = w_set_tab(*lst, app->map.y);
 	if ((app->player.pos_x == -1 || app->player.pos_y == -1) ||
 		app->map.tab[(int)app->player.pos_x][(int)app->player.pos_y] != 0)
 	{
@@ -52,7 +52,8 @@ void		w_set_map_or_directive(t_app *app, t_list **lst,
 			token = 1;
 		if (token == 0)
 			line = ft_del_char(line, ' ');
-		size = ft_strlen(line) + 1;
+		size = ft_strlen(line);
+		//printf("%s %d\n", line, size);
 		ft_lstpush_back(lst, line, size);
 		ft_strdel(&line);
 		if (token == 0)

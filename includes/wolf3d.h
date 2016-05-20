@@ -73,7 +73,7 @@ typedef struct 		s_map
 {
 	int				x;
 	int				y;
-	int				**tab;
+	char			**tab;
 }					t_map;
 
 typedef struct  	s_player
@@ -148,8 +148,8 @@ void		w_print_fps(t_app *app) ;
 
 void		w_read_map(t_app *app, char *file);
 void		w_set_texture(t_app *app, char *file_name, char num);
-void		w_set_one_dim(int **tab, t_list *l);
-int			**w_set_tab(t_list *l);
+void		w_set_one_dim(char **tab, t_list *l);
+char		**w_set_tab(t_list *l, int size);
 void		w_set_directive(t_app *app, char *str, int i);
 void		w_set_view(t_app *app);
 
