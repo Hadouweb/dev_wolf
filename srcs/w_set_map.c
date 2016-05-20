@@ -51,8 +51,11 @@ void		w_set_map_or_directive(t_app *app, t_list **lst,
 			token = 1;
 		if (token == 0)
 			line = ft_del_char(line, ' ');
-		size = ft_strlen(line) + 1;
-		printf("%s %d\n", line, size);
+		size = ft_strlen(line) + 2;
+		if (line[size - 3] == '0')
+			line[size - 3] = '1';
+		if (line[0] == '0')
+			line[0] = '1';
 		ft_lstpush_back(lst, line, size);
 		ft_strdel(&line);
 		if (token == 0)
@@ -61,6 +64,35 @@ void		w_set_map_or_directive(t_app *app, t_list **lst,
 			app->map.x = size - 2;
 	}
 
+}
+
+void		w_adjust_limit_map(t_app *app, t_list **lst)
+{
+	t_list	*l;
+	char 	*str;
+	int 	i;
+
+	l = *lst;
+	str = l->content;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '0')
+			str[i] = '1';
+			i++; 
+	}
+	i = 0;
+	while (l->next && ++i < app->map.y)
+		l = l->next;
+	str = l->content;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '0')
+			str[i] = '1';
+		i++;
+	}
+	ft_lstprint(*lst, NULL);
 }
 
 void		w_read_map(t_app *app, char *file)
@@ -81,6 +113,7 @@ void		w_read_map(t_app *app, char *file)
 	{
 		w_set_map_or_directive(app, &lst, line, token);
 	}
-	ft_lstprint(lst, NULL);
+	//ft_lstprint(lst, NULL);
+	w_adjust_limit_map(app, &lst);
 	w_set_map(app, &lst);
 }

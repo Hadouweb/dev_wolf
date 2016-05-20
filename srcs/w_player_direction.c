@@ -16,11 +16,12 @@ void		w_player_direction_up(t_app *app)
 {
 	double	pos_x;
 	double	pos_y;
+	int 	x;
 
 	pos_x = app->player.pos_x;
 	pos_y = app->player.pos_y;
-	if (app->map.tab[(int)(pos_x +
-		app->player.dir_x * app->speed)][(int)pos_y] == 0)
+	x = (int)(pos_x + app->player.dir_x * app->speed);
+	if (app->map.tab[x][(int)pos_y] == 0)
 		app->player.pos_x += app->player.dir_x * app->speed;
 	if (app->map.tab[(int)pos_x][(int)(pos_y +
 		app->player.dir_y * app->speed)] == 0)

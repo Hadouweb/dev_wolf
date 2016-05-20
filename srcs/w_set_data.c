@@ -24,7 +24,7 @@ void	w_set_view(t_app *app)
 	app->fps.str_fps = ft_strdup("0");
 }
 
-void	w_set_one_dim(char **tab, t_list *l)
+void	w_set_one_dim(int **tab, t_list *l)
 {
 	size_t	i;
 	char	*str;
@@ -33,13 +33,13 @@ void	w_set_one_dim(char **tab, t_list *l)
 	str = (char*)l->content;
 	while (i < l->content_size)
 	{
-		(*tab)[i] = str[i];
+		(*tab)[i] = (int)str[i] - '0';
 		i++;
 	}
 	(*tab)[i] = '\0';
 }
 
-void	w_print_tab(char **tab)
+void	w_print_tab(int **tab)
 {
 	int 	i;
 	int 	j;
@@ -50,7 +50,7 @@ void	w_print_tab(char **tab)
 		j = 0;
 		while (tab[i][j])
 		{
-			printf("%c ", tab[i][j]);
+			printf("%d ", tab[i][j]);
 			j++;
 		}
 		i++;
@@ -58,24 +58,24 @@ void	w_print_tab(char **tab)
 	}
 }
 
-char	**w_set_tab(t_list *l, int size)
+int		**w_set_tab(t_list *l, int size)
 {
-	char	**tab;
+	int		**tab;
 	int		i;
 
-	if ((tab = (char **)ft_memalloc(size * sizeof(char *) + 1)) == NULL)
+	if ((tab = (int **)ft_memalloc(size * sizeof(int *) + 1)) == NULL)
 		return (NULL);
 	i = 0;
 	while (i < size && l)
 	{
-		if ((tab[i] = (char *)ft_memalloc(l->content_size *
-			sizeof(char)) + 1) == NULL)
+		if ((tab[i] = (int *)ft_memalloc(l->content_size *
+			sizeof(int)) + 1) == NULL)
 			return (NULL);
 		w_set_one_dim(&tab[i], l);
 		l = l->next;
 		i++;
 	}
 	tab[i] = NULL;
-	w_print_tab(tab);
+	//w_print_tab(tab);
 	return (tab);
 }
