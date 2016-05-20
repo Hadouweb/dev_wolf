@@ -16,7 +16,15 @@
 # define KEY_RIGHT 124
 # define KEY_DOWN 125
 
+# define KEY_UP2 13
+# define KEY_LEFT2 0
+# define KEY_RIGHT2 2
+# define KEY_DOWN2 1
+
+# define KEY_FLASH 257
+
 # define MOVE_SPEED 0.2
+# define ROT_SPEED 0.2
 
 typedef struct		s_obj
 {
@@ -117,6 +125,7 @@ typedef struct  	s_app
 	t_color			test;
 	t_fps			fps;
 	t_list			*lst_texture;
+	double 			speed;
 }					t_app;
 
 int			w_event_arrow_key(int keycode, t_app *app);

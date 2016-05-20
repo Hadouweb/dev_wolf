@@ -2,19 +2,19 @@
 
 int			w_event_arrow_key(int keycode, t_app *app)
 {
-	if (keycode == KEY_UP)
+	if (keycode == KEY_UP || keycode == KEY_UP2)
 	{
 		w_player_direction_up(app);
 	}
-	else if (keycode == KEY_RIGHT)
+	else if (keycode == KEY_RIGHT || keycode == KEY_RIGHT2)
 	{
 		w_player_direction_right(app);
 	}
-	else if (keycode == KEY_LEFT)
+	else if (keycode == KEY_LEFT || keycode == KEY_LEFT2)
 	{
 		w_player_direction_left(app);
 	}
-	else if (keycode == KEY_DOWN)
+	else if (keycode == KEY_DOWN || keycode == KEY_DOWN2)
 	{
 		w_player_direction_down(app);
 	}
@@ -23,8 +23,6 @@ int			w_event_arrow_key(int keycode, t_app *app)
 
 int			w_event_repeat(int keycode, t_app *app)
 {
-	if (app || keycode)
-		;
 	w_event_arrow_key(keycode, app);
 	return (1);
 }
@@ -33,8 +31,16 @@ int			w_event(int keycode, t_app *app)
 {
 	if (keycode == 53)
 		exit(1);
+	if (keycode == KEY_FLASH && app->speed == MOVE_SPEED)
+	{
+		app->speed *= 4;
+	}
+	else if (keycode == KEY_FLASH && app->speed > MOVE_SPEED)
+	{
+		app->speed = MOVE_SPEED;
+	}
+	printf("%d\n", keycode);
 	if (app)
 		;
-	//w_event_arrow_key(keycode, app);
 	return (1);
 }

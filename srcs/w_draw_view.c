@@ -166,6 +166,20 @@ void			w_draw_vline(t_app *app, int x)
 	}
 }
 
+void			w_draw_floor(t_app *app, int x)
+{
+	int 	max;
+	int 	y;
+
+	max = SIZE_H / 2;
+	y = SIZE_H;
+	while (y > max)
+	{
+		w_set_pixel(app->obj, x, y, w_get_color(100, 100, 100, 0));
+		y--;
+	}
+}
+
 int				w_draw_view(t_app *app)
 {
 	int		x;
@@ -175,6 +189,7 @@ int				w_draw_view(t_app *app)
 
 	while (x < SIZE_W)
 	{
+		w_draw_floor(app, x);
 		w_current_position_of_ray(app, x);
 		w_preparation_for_dda_algorithm(app);
 		elem = w_dda_algorithm(app);
