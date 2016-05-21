@@ -16,7 +16,7 @@ void		w_player_direction_up(t_app *app)
 {
 	double	pos_x;
 	double	pos_y;
-	int 	x;
+	int		x;
 
 	pos_x = app->player.pos_x;
 	pos_y = app->player.pos_y;

@@ -18,9 +18,9 @@ void			w_current_position_of_ray(t_app *app, int x)
 	app->ray.ray_pos_x = app->player.pos_x;
 	app->ray.ray_pos_y = app->player.pos_y;
 	app->ray.ray_dir_x = app->player.dir_x + app->player.cam_plane_x *
-	app->player.camera_x;
+		app->player.camera_x;
 	app->ray.ray_dir_y = app->player.dir_y + app->player.cam_plane_y *
-	app->player.camera_x;
+		app->player.camera_x;
 	app->ray.map_x = (int)app->ray.ray_pos_x;
 	app->ray.map_y = (int)app->ray.ray_pos_y;
 }

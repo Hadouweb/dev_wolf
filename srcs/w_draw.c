@@ -12,7 +12,7 @@
 
 #include "wolf3d.h"
 
-void		w_draw(t_app *app)
+void			w_draw(t_app *app)
 {
 	mlx_clear_window(app->mlx, app->win);
 	mlx_put_image_to_window(app->mlx, app->win, app->obj->img, 0, 0);
@@ -21,7 +21,7 @@ void		w_draw(t_app *app)
 	ft_bzero(app->obj->data, SIZE_W * SIZE_H * 4);
 }
 
-void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
+void			w_set_pixel(t_obj *obj, int x, int y, t_color color)
 {
 	int		index;
 
@@ -33,7 +33,7 @@ void		w_set_pixel(t_obj *obj, int x, int y, t_color color)
 	obj->data[index + 2] = color.b;
 }
 
-t_obj		*w_init_obj_info(void *mlx, int width, int height)
+t_obj			*w_init_obj_info(void *mlx, int width, int height)
 {
 	t_obj	*obj;
 

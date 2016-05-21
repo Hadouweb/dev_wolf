@@ -39,25 +39,6 @@ void	w_set_one_dim(int **tab, t_list *l)
 	(*tab)[i] = '\0';
 }
 
-void	w_print_tab(int **tab)
-{
-	int 	i;
-	int 	j;
-
-	i = 0;
-	while (tab[i])
-	{
-		j = 0;
-		while (tab[i][j])
-		{
-			printf("%d ", tab[i][j]);
-			j++;
-		}
-		i++;
-		printf("\n");
-	}
-}
-
 int		**w_set_tab(t_list *l, int size)
 {
 	int		**tab;
@@ -76,6 +57,5 @@ int		**w_set_tab(t_list *l, int size)
 		i++;
 	}
 	tab[i] = NULL;
-	//w_print_tab(tab);
 	return (tab);
 }

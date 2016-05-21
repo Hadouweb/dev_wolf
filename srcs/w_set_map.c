@@ -63,14 +63,13 @@ void		w_set_map_or_directive(t_app *app, t_list **lst,
 		if (size > app->map.x && token == 0)
 			app->map.x = size - 2;
 	}
-
 }
 
 void		w_adjust_limit_map(t_app *app, t_list **lst)
 {
 	t_list	*l;
-	char 	*str;
-	int 	i;
+	char	*str;
+	int		i;
 
 	l = *lst;
 	str = l->content;
@@ -79,7 +78,7 @@ void		w_adjust_limit_map(t_app *app, t_list **lst)
 	{
 		if (str[i] == '0')
 			str[i] = '1';
-			i++; 
+		i++;
 	}
 	i = 0;
 	while (l->next && ++i < app->map.y)
@@ -112,7 +111,6 @@ void		w_read_map(t_app *app, char *file)
 	{
 		w_set_map_or_directive(app, &lst, line, token);
 	}
-	//ft_lstprint(lst, NULL);
 	w_adjust_limit_map(app, &lst);
 	w_set_map(app, &lst);
 }
